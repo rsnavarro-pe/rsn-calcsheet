@@ -13,7 +13,7 @@ function createInitialState() {
       engineer: 'J. Doe, PE',
       checker: 'A. Smith, SE',
       codeEdition: 'IBC 2024 / ASCE 7-22',
-      firmName: 'Navarro Structural & Civil'
+      firmName: 'RSN Engineering'
     },
     activeSheetId: 's1',
     sheets: [

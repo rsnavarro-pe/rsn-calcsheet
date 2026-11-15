@@ -5,7 +5,7 @@ Browser-based US Customary engineering calculation and permit-submittal applicat
 ## Features
 - **US Customary Dimensional Engine:** `in`, `ft`, `ft-in` (`12'-6 1/2"`), `lb`/`lbf`, `kip`, `plf`, `klf`, `psf`, `ksf`, `psi`, `ksi`, `pcf`, `kip-ft`, `ac`, `cfs`, `gpm`, `fps`, `in/hr`.
 - **Built-in US Material & Section Tables:** AISC W-shapes (`aisc(...)`), NDS dressed lumber (`nds(...)`), and ACI 318 rebar (`rebar(...)`).
-- **US-Only Design Templates (Zero Eurocode):**
+- **US-Only Design Templates:**
   - `S-1`: Steel Floor Beam (AISC 360-22 LRFD)
   - `S-2`: Timber Floor Joist (NDS 2024 ASD)
   - `S-3`: Reinforced Concrete Beam (ACI 318-19)

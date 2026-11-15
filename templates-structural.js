@@ -1,5 +1,5 @@
 /**
- * US Structural Templates (Zero Eurocode — AISC 360, NDS, ACI 318, ASCE 7-22, IBC 2024)
+ * US Structural Templates (AISC 360, NDS, ACI 318, ASCE 7-22, IBC 2024)
  */
 
 export const STRUCTURAL_TEMPLATES = {
@@ -8,7 +8,7 @@ export const STRUCTURAL_TEMPLATES = {
     discipline: 'Structural',
     codeRef: 'IBC 2024 / ASCE 7-22 / AISC 360-22',
     body: `# Simply Supported Steel Floor Beam (AISC 360-22 LRFD)
-// Replaces EN 1993-1-1 with AISC 360-22 Ch. F (Flexure) & Ch. G (Shear).
+// Simply supported W-shape floor beam under AISC 360-22 Ch. F (Flexure) & Ch. G (Shear).
 
 ## 1. Geometry & Section Properties (W16x36, A992)
 L = 24'-0" -> ft
@@ -45,7 +45,7 @@ check(delta_L, delta_allow, "Live Load Deflection (L/360)")`
     discipline: 'Structural',
     codeRef: 'IBC 2024 / NDS 2024',
     body: `# Dimension Lumber Floor Joist (NDS 2024 ASD)
-// US equivalent of timber joist floor check (replaces EN 1995-1-1).
+// Timber floor joist check per NDS 2024 ASD.
 
 ## 1. Member & Geometry (2x10 DF-L No. 2 @ 16" o.c.)
 L = 14'-6" -> ft
@@ -89,7 +89,7 @@ check(delta_L, L / 360, "Live Load Deflection (L/360)")`
     discipline: 'Structural',
     codeRef: 'IBC 2024 / ACI 318-19',
     body: `# Singly Reinforced Concrete Beam (ACI 318-19)
-// US equivalent of RC beam design (replaces EN 1992-1-1).
+// Reinforced concrete beam design per ACI 318-19.
 
 ## 1. Cross-Section & Materials
 b = 12 in
@@ -125,7 +125,7 @@ check(Vu, phi_Vn, "Total Shear (Vu / phi*(Vc + Vs))")`
     discipline: 'Structural',
     codeRef: 'IBC 2024 / ACI 318-19',
     body: `# Square Spread Footing Bearing & One-Way Shear
-// US equivalent of pad foundation check (replaces EN 1997-1).
+// Pad foundation bearing and one-way shear check per IBC 2024 & ACI 318-19.
 
 ## 1. Soil & Concrete Parameters
 q_allow = 3000 psf
@@ -157,7 +157,7 @@ check(V_u, phi_Vc, "One-Way Beam Shear (Vu / phi*Vc)")`
     discipline: 'Structural',
     codeRef: 'IBC 2024 / ASCE 7-22 Ch. 7 & 26–27',
     body: `# Environmental Loads: Snow & Wind (ASCE 7-22)
-// US equivalent of snow/wind action sheets (replaces EN 1991-1-3 & 1-4).
+// Roof snow and wind pressure calculations per ASCE 7-22.
 
 ## 1. Roof Snow Load (ASCE 7-22 Ch. 7)
 pg = 30 psf

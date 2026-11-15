@@ -1,5 +1,5 @@
 /**
- * Combined US Structural & Civil/Site Templates (Zero Eurocode)
+ * Combined US Structural & Civil/Site Templates
  */
 import { STRUCTURAL_TEMPLATES } from './templates-structural.js';
 import { CIVIL_TEMPLATES } from './templates-civil.js';

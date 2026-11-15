@@ -145,14 +145,25 @@ body {
 .tb-meta-grid span { color: #6E6E73; }
 .tb-seal { border: 1px dashed var(--color-terracotta); display: grid; place-items: center; text-align: center; font-size: 10px; font-weight: 600; color: var(--color-terracotta); }
 
+.sheet-diagram { margin: 0 0 14px; padding: 10px; border: 1px solid var(--color-border); border-radius: 4px; background: #FAF8F6; text-align: center; break-inside: avoid; }
+.diagram-svg { width: 100%; max-width: 440px; height: auto; display: block; margin: 0 auto; }
+.sheet-diagram figcaption { font-size: 11px; color: #555558; margin-top: 4px; font-weight: 600; }
+
 .calc-h1 { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 14px 0 6px; border-bottom: 2px solid var(--color-terracotta); padding-bottom: 4px; }
 .calc-h2 { font-family: var(--font-display); font-size: 14px; font-weight: 600; margin: 14px 0 6px; color: var(--color-terracotta); text-transform: uppercase; letter-spacing: 0.03em; }
 .calc-h3 { font-size: 14px; font-weight: 600; margin: 10px 0 4px; }
 .calc-note { font-size: 13px; color: #555558; margin: 3px 0 6px; font-style: italic; }
 .calc-spacer { height: 6px; }
-.calc-row { display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr; gap: 10px; align-items: baseline; padding: 5px 8px; border-bottom: 1px solid #EFEAE6; font-size: 13px; break-inside: avoid; }
+.calc-row { display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr; gap: 10px; align-items: center; padding: 6px 8px; border-bottom: 1px solid #EFEAE6; font-size: 13px; break-inside: avoid; }
 .calc-row:nth-child(even) { background: var(--color-offwhite); }
-.calc-sym, .calc-sub { font-family: var(--font-mono); font-size: 12px; }
+.calc-sym, .calc-sub { font-size: 13px; }
+.math-expr { font-family: 'Cambria Math', 'STIX Two Math', Georgia, serif; line-height: 1.4; }
+.math-expr var { font-style: italic; font-weight: 600; }
+.math-expr sub, .math-expr sup { font-size: 0.72em; line-height: 0; }
+.frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 0.88em; margin: 0 2px; }
+.frac .num { border-bottom: 1px solid currentColor; padding: 0 3px 1px; }
+.frac .den { padding: 1px 3px 0; }
+.sqrt .radicand { border-top: 1px solid currentColor; padding: 0 2px; }
 .calc-sub { color: #555558; }
 .calc-res { font-family: var(--font-mono); font-size: 13px; text-align: right; font-weight: 600; }
 .calc-res span { color: var(--color-terracotta); }

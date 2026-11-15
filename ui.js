@@ -8,6 +8,8 @@ import {
 } from './state.js';
 import { evaluateSheet } from './parser.js';
 import { openModuleModal } from './modal.js';
+import { formatVarName, formatMathExpr } from './math-format.js';
+import { renderSheetDiagram } from './diagrams.js';
 
 const $ = (id) => document.getElementById(id);
 let viewMode = 'split'; // 'split' | 'preview' | 'project'
@@ -235,10 +237,11 @@ function renderPreview() {
   }
 
   const sheetIndex = state.sheets.findIndex(s => s.id === sheet.id) + 1;
+  const diagramHtml = renderSheetDiagram(sheet, results);
   $('sheet-preview').innerHTML = `
     <div class="title-block">
       <div class="tb-main">
-        <div class="tb-eyebrow">${esc(state.meta.firmName)} — US ENGINEERING CALCULATION</div>
+        ${state.meta.firmName ? `<div class="tb-eyebrow">${esc(state.meta.firmName)}</div>` : ''}
         <div class="tb-project">${esc(state.meta.projectName)}</div>
         <div class="tb-sheet-title">${esc(sheet.title)}</div>
       </div>
@@ -250,6 +253,7 @@ function renderPreview() {
       </div>
       <div class="tb-seal">PE / SE<br>SEAL</div>
     </div>
+    ${diagramHtml}
     <div class="calc-flow">${results.map(renderLine).join('')}</div>
   `;
 }
@@ -262,9 +266,9 @@ function renderLine(r) {
     case 'h3': return `<h3 class="calc-h3">${esc(r.text)}</h3>`;
     case 'note': return `<p class="calc-note">${esc(r.text)}</p>`;
     case 'calc':
-      return `<div class="calc-row"><div class="calc-sym"><strong>${esc(r.name)}</strong> = ${esc(r.formula)}</div><div class="calc-sub">= ${esc(r.substituted)}</div><div class="calc-res">= <span>${esc(r.result)}</span></div></div>`;
+      return `<div class="calc-row"><div class="calc-sym math-expr">${formatVarName(r.name)} = ${formatMathExpr(r.formula)}</div><div class="calc-sub math-expr">= ${formatMathExpr(r.substituted)}</div><div class="calc-res">= <span>${esc(r.result)}</span></div></div>`;
     case 'expr':
-      return `<div class="calc-row"><div class="calc-sym">${esc(r.formula)}</div><div class="calc-sub">= ${esc(r.substituted)}</div><div class="calc-res">= <span>${esc(r.result)}</span></div></div>`;
+      return `<div class="calc-row"><div class="calc-sym math-expr">${formatMathExpr(r.formula)}</div><div class="calc-sub math-expr">= ${formatMathExpr(r.substituted)}</div><div class="calc-res">= <span>${esc(r.result)}</span></div></div>`;
     case 'check': {
       const pct = Math.min(100, Math.max(0, r.dcr * 100));
       const cls = r.pass ? 'pass' : 'fail';

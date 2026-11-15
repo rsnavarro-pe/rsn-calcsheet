@@ -1,0 +1,122 @@
+/**
+ * Parametric Engineering SVG Illustrations for Worksheets
+ */
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+export function renderSheetDiagram(sheet, results) {
+  const vars = {};
+  for (const r of results) {
+    if (r.type === 'calc') vars[r.name] = r.result;
+  }
+  const title = (sheet.title || '').toLowerCase();
+
+  if (title.includes('steel') || title.includes('beam') && !title.includes('concrete')) {
+    return beamDiagram(vars.L || '24 ft', vars.w_u || 'w_u', vars.Mu || 'M_u');
+  }
+  if (title.includes('timber') || title.includes('wood') || title.includes('joist')) {
+    return timberJoistDiagram(vars.L || '14.5 ft', vars.spacing || '16 in');
+  }
+  if (title.includes('concrete')) {
+    return concreteSectionDiagram(vars.b || '12 in', vars.d || '19.5 in');
+  }
+  if (title.includes('footing')) {
+    return footingDiagram(vars.B || '6.5 ft', vars.h || '18 in', vars.q_actual || 'q_act');
+  }
+  if (title.includes('wind') || title.includes('snow')) {
+    return windSnowDiagram(vars.p_snow || 'p_snow', vars.p_windward || 'p_w');
+  }
+  if (title.includes('runoff') || title.includes('rational')) {
+    return runoffDiagram(vars.A_total || 'A', vars.Q_10 || 'Q_10');
+  }
+  if (title.includes('manning') || title.includes('channel')) {
+    return channelDiagram(vars.b || '4 ft', vars.y || '1.5 ft', vars.V || 'V');
+  }
+  return '';
+}
+
+function wrapSvg(caption, inner) {
+  return `<figure class="sheet-diagram">
+    <svg viewBox="0 0 460 132" class="diagram-svg" fill="none" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>
+    <figcaption>${esc(caption)}</figcaption>
+  </figure>`;
+}
+
+function beamDiagram(L, wu, mu) {
+  return wrapSvg(`Simply Supported Beam — Span L = ${L}, Factored Load = ${wu}, M_u = ${mu}`, `
+    <line x1="60" y1="68" x2="400" y2="68" stroke="#2C2C2E" stroke-width="4"/>
+    <polygon points="60,71 51,88 69,88" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.5"/>
+    <polygon points="400,71 391,88 409,88" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.5"/>
+    <line x1="46" y1="92" x2="74" y2="92" stroke="#2C2C2E" stroke-width="1.5"/>
+    <line x1="386" y1="92" x2="414" y2="92" stroke="#2C2C2E" stroke-width="1.5"/>
+    <rect x="60" y="34" width="340" height="22" fill="#90472D" fill-opacity="0.12" stroke="#90472D" stroke-width="1.2"/>
+    <path d="M90,34 V62 M140,34 V62 M190,34 V62 M240,34 V62 M290,34 V62 M340,34 V62 M380,34 V62" stroke="#90472D" stroke-width="1.3"/>
+    <text x="230" y="24" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">w_u = ${esc(wu)}</text>
+    <line x1="60" y1="112" x2="400" y2="112" stroke="#6E6E73" stroke-width="1"/>
+    <text x="230" y="125" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
+  `);
+}
+
+function timberJoistDiagram(L, s) {
+  return wrapSvg(`Timber Joist Framing — Span L = ${L}, Spacing = ${s}`, `
+    <polygon points="80,96 220,32 390,52 250,116" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.3"/>
+    <line x1="108" y1="100" x2="248" y2="36" stroke="#90472D" stroke-width="3"/>
+    <line x1="146" y1="105" x2="286" y2="41" stroke="#90472D" stroke-width="3"/>
+    <line x1="184" y1="109" x2="324" y2="45" stroke="#90472D" stroke-width="3"/>
+    <line x1="222" y1="114" x2="362" y2="50" stroke="#90472D" stroke-width="3"/>
+    <text x="150" y="54" font-size="11" fill="#2C2C2E" font-weight="600">L = ${esc(L)}</text>
+    <text x="310" y="106" font-size="11" fill="#90472D" font-weight="600">s = ${esc(s)} o.c.</text>
+  `);
+}
+
+function concreteSectionDiagram(b, d) {
+  return wrapSvg(`Reinforced Concrete Section — b = ${b}, d = ${d}`, `
+    <rect x="175" y="18" width="110" height="96" fill="#EFEAE6" stroke="#2C2C2E" stroke-width="2"/>
+    <rect x="184" y="26" width="92" height="80" rx="4" fill="none" stroke="#90472D" stroke-width="1.5" stroke-dasharray="4 2"/>
+    <circle cx="196" cy="96" r="4.5" fill="#2C2C2E"/><circle cx="230" cy="96" r="4.5" fill="#2C2C2E"/><circle cx="264" cy="96" r="4.5" fill="#2C2C2E"/>
+    <text x="230" y="12" text-anchor="middle" font-size="11" fill="#2C2C2E">b = ${esc(b)}</text>
+    <text x="305" y="68" font-size="11" fill="#90472D" font-weight="600">d = ${esc(d)}</text>
+  `);
+}
+
+function footingDiagram(B, h, q) {
+  return wrapSvg(`Spread Footing — Width B = ${B}, Thickness h = ${h}, Bearing = ${q}`, `
+    <rect x="210" y="14" width="40" height="40" fill="#D5CFC9" stroke="#2C2C2E" stroke-width="1.5"/>
+    <rect x="135" y="54" width="190" height="32" fill="#EFEAE6" stroke="#2C2C2E" stroke-width="2"/>
+    <path d="M145,108 V90 M180,108 V90 M215,108 V90 M250,108 V90 M285,108 V90 M315,108 V90" stroke="#90472D" stroke-width="1.4"/>
+    <line x1="135" y1="108" x2="325" y2="108" stroke="#90472D" stroke-width="1.4"/>
+    <text x="230" y="124" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">q = ${esc(q)} (B = ${esc(B)}, h = ${esc(h)})</text>
+  `);
+}
+
+function windSnowDiagram(snow, wind) {
+  return wrapSvg(`Environmental Loads — Roof Snow = ${snow}, Windward Wall = ${wind}`, `
+    <polygon points="150,58 230,28 310,58 310,108 150,108" fill="#F5F0EC" stroke="#2C2C2E" stroke-width="2"/>
+    <path d="M170,18 V44 M210,14 V30 M250,14 V30 M290,18 V44" stroke="#2C2C2E" stroke-width="1.4"/>
+    <path d="M85,68 H142 M85,84 H142 M85,100 H142" stroke="#90472D" stroke-width="1.8"/>
+    <text x="230" y="124" text-anchor="middle" font-size="11" fill="#2C2C2E">Snow: ${esc(snow)} | Windward: ${esc(wind)}</text>
+  `);
+}
+
+function runoffDiagram(A, Q) {
+  return wrapSvg(`Drainage Sub-Basin — Area = ${A}, Peak Runoff Q = ${Q}`, `
+    <path d="M90,34 C140,18 220,24 270,56 C240,94 140,96 90,68 Z" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/>
+    <line x1="270" y1="62" x2="375" y2="74" stroke="#90472D" stroke-width="4"/>
+    <circle cx="375" cy="74" r="10" fill="#EFEAE6" stroke="#2C2C2E" stroke-width="1.8"/>
+    <text x="175" y="60" text-anchor="middle" font-size="11" fill="#2C2C2E" font-weight="600">A = ${esc(A)}</text>
+    <text x="325" y="54" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">Q = ${esc(Q)}</text>
+  `);
+}
+
+function channelDiagram(b, y, V) {
+  return wrapSvg(`Trapezoidal Open Channel — Bottom b = ${b}, Depth y = ${y}, V = ${V}`, `
+    <polyline points="85,34 155,96 305,96 375,34" stroke="#2C2C2E" stroke-width="2.5"/>
+    <polygon points="116,60 344,60 305,96 155,96" fill="#90472D" fill-opacity="0.14" stroke="#90472D" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <text x="230" y="82" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">y = ${esc(y)} | V = ${esc(V)}</text>
+    <text x="230" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">b = ${esc(b)}</text>
+  `);
+}
