@@ -97,9 +97,35 @@ export function deleteSheet(id) {
 }
 
 export function replaceProjectState(nextState) {
-  if (!nextState || !Array.isArray(nextState.sheets) || !nextState.sheets.length) {
+  if (!nextState || typeof nextState !== 'object' || Array.isArray(nextState)) {
     throw new Error('Invalid project JSON file.');
   }
-  state = nextState;
+  if (!Array.isArray(nextState.sheets) || !nextState.sheets.length || nextState.sheets.length > 100) {
+    throw new Error('Project must contain between 1 and 100 sheets.');
+  }
+  const str = (v, max = 200) => (typeof v === 'string' ? v.slice(0, max) : '');
+  const m = nextState.meta && typeof nextState.meta === 'object' ? nextState.meta : {};
+  const cleanMeta = {
+    projectName: str(m.projectName),
+    projectNumber: str(m.projectNumber, 64),
+    engineer: str(m.engineer, 100),
+    checker: str(m.checker, 100),
+    codeEdition: str(m.codeEdition, 120),
+    firmName: str(m.firmName, 120)
+  };
+  const cleanSheets = nextState.sheets.map((s, idx) => {
+    if (!s || typeof s !== 'object') throw new Error(`Invalid sheet at index ${idx}`);
+    return {
+      id: str(s.id, 64) || `s${idx + 1}`,
+      title: str(s.title, 160) || `Sheet ${idx + 1}`,
+      discipline: str(s.discipline, 64) || 'Structural',
+      codeRef: str(s.codeRef, 120),
+      body: str(s.body, 100000)
+    };
+  });
+  const activeId = cleanSheets.some(s => s.id === nextState.activeSheetId)
+    ? nextState.activeSheetId
+    : cleanSheets[0].id;
+  state = { meta: cleanMeta, activeSheetId: activeId, sheets: cleanSheets };
   saveState();
 }

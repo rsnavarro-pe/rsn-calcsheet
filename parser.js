@@ -98,13 +98,18 @@ function tokenize(expr) {
 }
 
 export function evaluateExpression(expr, scope) {
+  if (expr.length > 2000) throw new Error('Expression exceeds maximum length (2000 chars)');
   const tokens = tokenize(expr);
   let pos = 0;
+  let depth = 0;
+  const MAX_DEPTH = 64;
   const peek = () => tokens[pos];
   const consume = () => tokens[pos++];
 
   function parseAdd() {
-    let left = parseMul();
+    if (++depth > MAX_DEPTH) throw new Error('Expression nesting too deep');
+    try {
+      let left = parseMul();
     while (peek()?.type === 'OP' && (peek().value === '+' || peek().value === '-')) {
       const op = consume().value;
       const right = parseMul();
@@ -117,7 +122,10 @@ export function evaluateExpression(expr, scope) {
         sub: `${left.sub} ${op} ${right.sub}`
       };
     }
-    return left;
+      return left;
+    } finally {
+      depth--;
+    }
   }
 
   function parseMul() {

@@ -1,0 +1,8 @@
+{
+  "upstreamRepo": "OpenAEC-Foundation/Open-CalcSheet-Studio",
+  "upstreamBranch": "main",
+  "syncMode": "one-way-readonly",
+  "policy": "Never push local data or PRs upstream. Review new upstream commits for US-applicable features only (no Eurocode/SI-only modules).",
+  "lastReviewedDate": "2026-11-15",
+  "lastReviewedSha": ""
+}

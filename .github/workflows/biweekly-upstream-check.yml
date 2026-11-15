@@ -1,0 +1,41 @@
+name: Biweekly One-Way Upstream Check (open-aec)
+
+on:
+  schedule:
+    # Runs at 09:00 UTC on the 1st and 15th of every month (biweekly)
+    - cron: '0 9 1,15 * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout rsn-calcsheet
+        uses: actions/checkout@v4
+
+      - name: Check OpenAEC-Foundation/Open-CalcSheet-Studio (read-only one-way)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          UPSTREAM="OpenAEC-Foundation/Open-CalcSheet-Studio"
+          LAST_SHA=$(node -e "console.log(require('./.upstream-sync.json').lastReviewedSha || '')")
+          LATEST_JSON=$(curl -fsSL "https://api.github.com/repos/${UPSTREAM}/commits/main")
+          LATEST_SHA=$(echo "$LATEST_JSON" | node -e "const d=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(d.sha)")
+          LATEST_MSG=$(echo "$LATEST_JSON" | node -e "const d=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(d.commit.message.split('\n')[0])")
+          LATEST_DATE=$(echo "$LATEST_JSON" | node -e "const d=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(d.commit.committer.date)")
+
+          echo "Last reviewed: ${LAST_SHA:-none}"
+          echo "Upstream head: $LATEST_SHA ($LATEST_DATE)"
+
+          if [ "$LATEST_SHA" != "$LAST_SHA" ]; then
+            BODY=$(printf "One-way biweekly check detected upstream activity on **%s**.\n\n- **Latest commit:** \`%s\` (%s)\n- **Message:** %s\n- **Compare / Review:** https://github.com/%s/commits/main\n\n> **Hardening reminder:** Only port US-applicable UI/engine improvements. Do not import Eurocode modules or external network calls." "$UPSTREAM" "$LATEST_SHA" "$LATEST_DATE" "$LATEST_MSG" "$UPSTREAM")
+            gh issue create \
+              --title "Biweekly Upstream Update Available (${LATEST_SHA:0:7})" \
+              --body "$BODY"
+          else
+            echo "Up to date with last reviewed SHA."
+          fi
