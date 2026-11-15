@@ -10,8 +10,13 @@
   <header class="topbar">
     <div class="brand">
       <span class="brand-title">RSN CalcSheet</span>
-      <span class="brand-tag">US Customary • Structural &amp; Civil</span>
+      <span class="brand-tag">US Customary • Zero Eurocode</span>
     </div>
+    <nav class="mode-tabs">
+      <button class="mode-tab active" data-mode="split">Code + output</button>
+      <button class="mode-tab" data-mode="preview">Print preview</button>
+      <button class="mode-tab" data-mode="project">Project data</button>
+    </nav>
     <div class="topbar-actions">
       <button id="btn-export-json" class="btn">Export JSON</button>
       <label class="btn file-btn">Import JSON<input id="input-import-json" type="file" accept=".json" hidden></label>
@@ -19,63 +24,99 @@
     </div>
   </header>
 
-  <section class="metabar">
-    <div class="meta-field"><label>Firm Name</label><input id="meta-firm" type="text"></div>
-    <div class="meta-field"><label>Project Name</label><input id="meta-project" type="text"></div>
-    <div class="meta-field"><label>Project #</label><input id="meta-number" type="text"></div>
-    <div class="meta-field"><label>Designer</label><input id="meta-engineer" type="text"></div>
-    <div class="meta-field"><label>Checker</label><input id="meta-checker" type="text"></div>
-    <div class="meta-field"><label>Governing Code</label><input id="meta-code" type="text"></div>
-  </section>
-
   <main class="workspace">
     <aside class="sidebar">
-      <div class="sidebar-section">
-        <h3>Project Sheets</h3>
-        <div class="add-sheet-row">
-          <select id="select-template">
-            <option value="steel_beam">S-1: Steel Beam (AISC 360-22)</option>
-            <option value="wood_joist">S-2: Timber Joist (NDS 2024)</option>
-            <option value="concrete_beam">S-3: Concrete Beam (ACI 318-19)</option>
-            <option value="footing">S-4: Spread Footing (IBC / ACI)</option>
-            <option value="wind_snow">S-5: Wind &amp; Snow (ASCE 7-22)</option>
-            <option value="rational_runoff">C-1: Rational Runoff (HEC-22)</option>
-            <option value="mannings_channel">C-2: Manning's Channel (HEC-15)</option>
-            <option value="blank">Blank Calc Sheet</option>
-          </select>
-          <button id="btn-add-sheet" class="btn btn-primary">+ Add</button>
-        </div>
-        <div id="sheet-list" class="sheet-list"></div>
+      <div class="side-block">
+        <div class="side-heading">PROJECT</div>
+        <button class="side-nav-btn" data-mode="project">Project data</button>
+        <button class="side-nav-btn" data-mode="preview">Report / Print preview</button>
       </div>
 
-      <div class="sidebar-section">
-        <h3>Quick-Insert US Snippets</h3>
+      <div class="side-block">
+        <div class="side-heading">Sheets <span id="sheet-count" class="side-count">0</span></div>
+        <div id="sheet-list" class="sheet-list"></div>
+        <button id="btn-open-modal" class="add-sheet-link">+ Add sheet</button>
+      </div>
+
+      <div class="side-block side-toc">
+        <div class="side-heading">Contents</div>
+        <div id="contents-list" class="toc-list"></div>
+      </div>
+
+      <div class="side-block">
+        <div class="side-heading">US Snippets</div>
         <div class="chip-grid">
-          <button class="chip" data-insert="aisc(&quot;W16x36&quot;, &quot;Zx&quot;)">aisc(&quot;W16x36&quot;,&quot;Zx&quot;)</button>
-          <button class="chip" data-insert="nds(&quot;2x10&quot;, &quot;S&quot;)">nds(&quot;2x10&quot;,&quot;S&quot;)</button>
-          <button class="chip" data-insert="rebar(&quot;#5&quot;, &quot;area&quot;)">rebar(&quot;#5&quot;,&quot;area&quot;)</button>
+          <button class="chip" data-insert="aisc(&quot;W16x36&quot;, &quot;Zx&quot;)">aisc(&quot;W16x36&quot;)</button>
+          <button class="chip" data-insert="nds(&quot;2x10&quot;, &quot;S&quot;)">nds(&quot;2x10&quot;)</button>
+          <button class="chip" data-insert="rebar(&quot;#5&quot;, &quot;area&quot;)">rebar(&quot;#5&quot;)</button>
           <button class="chip" data-insert="check(demand, capacity, &quot;Check&quot;)">check(D,C)</button>
           <button class="chip" data-insert=" -> kip-ft">-&gt; kip-ft</button>
           <button class="chip" data-insert=" -> ft-in">-&gt; ft-in</button>
           <button class="chip" data-insert=" -> psf">-&gt; psf</button>
           <button class="chip" data-insert=" -> cfs">-&gt; cfs</button>
-          <button class="chip" data-insert="12'-6&quot;">12'-6&quot;</button>
         </div>
       </div>
     </aside>
 
-    <section class="editor-pane">
-      <div class="editor-header">
-        <input id="sheet-title-input" type="text" placeholder="Sheet Title">
-        <input id="sheet-code-input" type="text" placeholder="Sheet Code Reference">
-      </div>
-      <textarea id="calc-editor" spellcheck="false" placeholder="Write US Customary calculations line by line..."></textarea>
+    <section id="split-workspace" class="split-workspace">
+      <section class="editor-pane">
+        <div class="pane-bar">
+          <span>CODE</span>
+          <span id="line-count-label" class="pane-meta">0 lines</span>
+        </div>
+        <div class="editor-header">
+          <input id="sheet-title-input" type="text" placeholder="Sheet Title">
+          <input id="sheet-code-input" type="text" placeholder="Sheet Code Reference">
+        </div>
+        <div class="code-wrap">
+          <pre id="line-gutter" class="line-gutter" aria-hidden="true">1</pre>
+          <textarea id="calc-editor" spellcheck="false" placeholder="Write US Customary calculations line by line..."></textarea>
+        </div>
+      </section>
+
+      <section class="preview-pane">
+        <div class="pane-bar">
+          <span>OUTPUT</span>
+          <span id="gov-dcr-status" class="gov-status">—</span>
+        </div>
+        <div class="paper-scroll">
+          <article id="sheet-preview" class="paper-sheet"></article>
+        </div>
+      </section>
     </section>
 
-    <section class="preview-pane">
-      <article id="sheet-preview" class="paper-sheet"></article>
+    <section id="project-data-pane" class="project-data-pane hidden">
+      <div class="project-card">
+        <h2>Project Data &amp; Title Block</h2>
+        <p class="project-sub">Appears on every 8.5&quot; × 11&quot; US submittal sheet and PDF printout.</p>
+        <div class="meta-grid">
+          <div class="meta-field"><label>Firm Name</label><input id="meta-firm" type="text"></div>
+          <div class="meta-field"><label>Project Name</label><input id="meta-project" type="text"></div>
+          <div class="meta-field"><label>Project #</label><input id="meta-number" type="text"></div>
+          <div class="meta-field"><label>Designer</label><input id="meta-engineer" type="text"></div>
+          <div class="meta-field"><label>Checker</label><input id="meta-checker" type="text"></div>
+          <div class="meta-field"><label>Governing Code</label><input id="meta-code" type="text"></div>
+        </div>
+      </div>
     </section>
   </main>
+
+  <div id="module-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <input id="module-search" type="search" placeholder="Search for a US module (e.g. steel, timber, concrete, runoff)...">
+        <button id="modal-close-btn" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <div id="module-modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <span class="modal-legend"><span class="mod-dot"></span> US Standard &nbsp; <span class="mod-badge">published</span> Verified</span>
+        <div class="modal-actions">
+          <button id="modal-cancel-btn" class="btn btn-light">Cancel</button>
+          <button id="modal-add-btn" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
     import { initUI } from './ui.js';
