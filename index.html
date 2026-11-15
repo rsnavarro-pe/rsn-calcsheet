@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSN CalcSheet — US Structural &amp; Civil/Site</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-title">RSN CalcSheet</span>
+      <span class="brand-tag">US Customary • Structural &amp; Civil</span>
+    </div>
+    <div class="topbar-actions">
+      <button id="btn-export-json" class="btn">Export JSON</button>
+      <label class="btn file-btn">Import JSON<input id="input-import-json" type="file" accept=".json" hidden></label>
+      <button id="btn-print" class="btn btn-primary">Print / PDF (8.5&quot;×11&quot;)</button>
+    </div>
+  </header>
+
+  <section class="metabar">
+    <div class="meta-field"><label>Firm Name</label><input id="meta-firm" type="text"></div>
+    <div class="meta-field"><label>Project Name</label><input id="meta-project" type="text"></div>
+    <div class="meta-field"><label>Project #</label><input id="meta-number" type="text"></div>
+    <div class="meta-field"><label>Designer</label><input id="meta-engineer" type="text"></div>
+    <div class="meta-field"><label>Checker</label><input id="meta-checker" type="text"></div>
+    <div class="meta-field"><label>Governing Code</label><input id="meta-code" type="text"></div>
+  </section>
+
+  <main class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Project Sheets</h3>
+        <div class="add-sheet-row">
+          <select id="select-template">
+            <option value="steel_beam">S-1: Steel Beam (AISC 360-22)</option>
+            <option value="wood_joist">S-2: Timber Joist (NDS 2024)</option>
+            <option value="concrete_beam">S-3: Concrete Beam (ACI 318-19)</option>
+            <option value="footing">S-4: Spread Footing (IBC / ACI)</option>
+            <option value="wind_snow">S-5: Wind &amp; Snow (ASCE 7-22)</option>
+            <option value="rational_runoff">C-1: Rational Runoff (HEC-22)</option>
+            <option value="mannings_channel">C-2: Manning's Channel (HEC-15)</option>
+            <option value="blank">Blank Calc Sheet</option>
+          </select>
+          <button id="btn-add-sheet" class="btn btn-primary">+ Add</button>
+        </div>
+        <div id="sheet-list" class="sheet-list"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Quick-Insert US Snippets</h3>
+        <div class="chip-grid">
+          <button class="chip" data-insert="aisc(&quot;W16x36&quot;, &quot;Zx&quot;)">aisc(&quot;W16x36&quot;,&quot;Zx&quot;)</button>
+          <button class="chip" data-insert="nds(&quot;2x10&quot;, &quot;S&quot;)">nds(&quot;2x10&quot;,&quot;S&quot;)</button>
+          <button class="chip" data-insert="rebar(&quot;#5&quot;, &quot;area&quot;)">rebar(&quot;#5&quot;,&quot;area&quot;)</button>
+          <button class="chip" data-insert="check(demand, capacity, &quot;Check&quot;)">check(D,C)</button>
+          <button class="chip" data-insert=" -> kip-ft">-&gt; kip-ft</button>
+          <button class="chip" data-insert=" -> ft-in">-&gt; ft-in</button>
+          <button class="chip" data-insert=" -> psf">-&gt; psf</button>
+          <button class="chip" data-insert=" -> cfs">-&gt; cfs</button>
+          <button class="chip" data-insert="12'-6&quot;">12'-6&quot;</button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="editor-pane">
+      <div class="editor-header">
+        <input id="sheet-title-input" type="text" placeholder="Sheet Title">
+        <input id="sheet-code-input" type="text" placeholder="Sheet Code Reference">
+      </div>
+      <textarea id="calc-editor" spellcheck="false" placeholder="Write US Customary calculations line by line..."></textarea>
+    </section>
+
+    <section class="preview-pane">
+      <article id="sheet-preview" class="paper-sheet"></article>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initUI } from './ui.js';
+    initUI();
+  </script>
+</body>
+</html>
