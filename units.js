@@ -72,6 +72,8 @@ const UNIT_DEFS = {
   'in/hr': { scale: 1 / 3600, dim: [1, 0, -1, 0], label: 'in/hr' },
   'cfs': { scale: 1728, dim: [3, 0, -1, 0], label: 'cfs' },
   'gpm': { scale: 231 / 60, dim: [3, 0, -1, 0], label: 'gpm' },
+  'gal': { scale: 231, dim: [3, 0, 0, 0], label: 'gal' },
+  'hp': { scale: 6600, dim: [1, 1, -1, 0], label: 'hp' },
 
   // Angle (base: rad)
   'rad': { scale: 1, dim: [0, 0, 0, 1], label: 'rad' },
@@ -92,6 +94,7 @@ const DEFAULT_DISPLAY = {
   '0,0,1,0': { unit: 's', scale: 1 },
   '1,0,-1,0': { unit: 'ft/s', scale: 12 },
   '3,0,-1,0': { unit: 'cfs', scale: 1728 },
+  '1,1,-1,0': { unit: 'hp', scale: 6600 },
   '0,0,0,1': { unit: 'deg', scale: 180 / Math.PI }
 };
 

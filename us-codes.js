@@ -64,7 +64,19 @@ const PROP_DIMS = {
   ry: [1, 0, 0, 0],
   db: [1, 0, 0, 0],
   area: [2, 0, 0, 0],
+  id: [1, 0, 0, 0],
+  od: [1, 0, 0, 0],
   weight: [-1, 1, 0, 0] // plf -> scale 1/12
+};
+
+export const PIPE_SCH40 = {
+  '2in':  { od: 2.375, id: 2.067 },
+  '3in':  { od: 3.500, id: 3.068 },
+  '4in':  { od: 4.500, id: 4.026 },
+  '6in':  { od: 6.625, id: 6.065 },
+  '8in':  { od: 8.625, id: 7.981 },
+  '10in': { od: 10.75, id: 10.02 },
+  '12in': { od: 12.75, id: 11.938 }
 };
 
 export function lookupSection(table, key, prop) {

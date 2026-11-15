@@ -5,7 +5,7 @@ import {
   DIM_ZERO, hasUnit, getUnit, sameDim, addDim, subDim, scaleDim,
   dimToString, parseFeetInches, formatQuantity, formatNum
 } from './units.js';
-import { AISC_W_SHAPES, NDS_LUMBER, ACI_REBAR, lookupSection } from './us-codes.js';
+import { AISC_W_SHAPES, NDS_LUMBER, ACI_REBAR, PIPE_SCH40, lookupSection } from './us-codes.js';
 
 const FUNCTIONS = {
   sqrt: (a) => ({ val: Math.sqrt(a.val), dim: scaleDim(a.dim, 0.5) }),
@@ -29,7 +29,8 @@ const FUNCTIONS = {
   max: (...args) => pickExtreme(args, Math.max),
   aisc: (sec, prop) => lookupSection(AISC_W_SHAPES, sec, prop),
   nds: (sec, prop) => lookupSection(NDS_LUMBER, sec, prop),
-  rebar: (bar, prop) => lookupSection(ACI_REBAR, bar, prop)
+  rebar: (bar, prop) => lookupSection(ACI_REBAR, bar, prop),
+  pipe: (nps, prop) => lookupSection(PIPE_SCH40, nps, prop)
 };
 
 function pickExtreme(args, fn) {

@@ -36,6 +36,21 @@ export function renderSheetDiagram(sheet, results) {
   if (title.includes('manning') || title.includes('channel')) {
     return channelDiagram(vars.b || '4 ft', vars.y || '1.5 ft', vars.V || 'V');
   }
+  if (title.includes('pipe flow') || title.includes('darcy')) {
+    return pipeFlowDiagram(vars.D || '6.065 in', vars.L || '500 ft', vars.V || 'V', vars.h_tot_DW || 'h_tot');
+  }
+  if (title.includes('valve') || title.includes('enlargement')) {
+    return enlargementDiagram(vars.d_1 || '4.03 in', vars.d_2 || '6.07 in', vars.dP_valve || 'dP');
+  }
+  if (title.includes('venturi') || title.includes('meter')) {
+    return venturiDiagram(vars.D || '6.07 in', vars.d_throat || '3.50 in', vars.Q_meter || 'Q');
+  }
+  if (title.includes('pump power') || title.includes('npsha')) {
+    return pumpDiagram(vars.Q || '350 gpm', vars.H_tdh || '65 ft', vars.BHP || 'BHP');
+  }
+  if (title.includes('system curve') || title.includes('operating point')) {
+    return systemCurveDiagram(vars.Q_op || '365 gpm', vars.H_sys_op || '68.6 ft');
+  }
   return '';
 }
 
@@ -118,5 +133,56 @@ function channelDiagram(b, y, V) {
     <polygon points="116,60 344,60 305,96 155,96" fill="#90472D" fill-opacity="0.14" stroke="#90472D" stroke-width="1.5" stroke-dasharray="5 3"/>
     <text x="230" y="82" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">y = ${esc(y)} | V = ${esc(V)}</text>
     <text x="230" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">b = ${esc(b)}</text>
+  `);
+}
+
+function pipeFlowDiagram(D, L, V, hTot) {
+  return wrapSvg(`Pipe Flow — ID = ${D}, Length = ${L}, Velocity = ${V}, Total Head Loss = ${hTot}`, `
+    <rect x="65" y="42" width="330" height="36" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="2"/>
+    <path d="M95,60 H165 M205,60 H275 M315,60 H375" stroke="#90472D" stroke-width="2"/>
+    <polygon points="375,55 387,60 375,65" fill="#90472D"/>
+    <text x="230" y="30" text-anchor="middle" font-size="11" fill="#2C2C2E" font-weight="600">L = ${esc(L)} | ID = ${esc(D)}</text>
+    <text x="230" y="102" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">V = ${esc(V)} | h_tot = ${esc(hTot)}</text>
+  `);
+}
+
+function enlargementDiagram(d1, d2, dP) {
+  return wrapSvg(`Enlargement & Valve — d1 = ${d1} to d2 = ${d2}, Valve Drop = ${dP}`, `
+    <polygon points="75,46 175,46 215,30 385,30 385,90 215,90 175,74 75,74" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="2"/>
+    <line x1="110" y1="60" x2="345" y2="60" stroke="#90472D" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="125" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">d1 = ${esc(d1)}</text>
+    <text x="300" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">d2 = ${esc(d2)}</text>
+    <text x="230" y="18" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">Valve dP = ${esc(dP)}</text>
+  `);
+}
+
+function venturiDiagram(D, d, Q) {
+  return wrapSvg(`Venturi Meter — Pipe D = ${D}, Throat d = ${d}, Flow Q = ${Q}`, `
+    <polygon points="70,34 150,34 195,50 245,50 315,34 390,34 390,86 315,86 245,70 195,70 150,86 70,86" fill="#EFEAE6" stroke="#2C2C2E" stroke-width="2"/>
+    <line x1="115" y1="34" x2="115" y2="18" stroke="#90472D" stroke-width="1.5"/>
+    <line x1="220" y1="50" x2="220" y2="18" stroke="#90472D" stroke-width="1.5"/>
+    <text x="168" y="15" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">dP taps</text>
+    <text x="230" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">D = ${esc(D)} | d = ${esc(d)} | Q = ${esc(Q)}</text>
+  `);
+}
+
+function pumpDiagram(Q, H, BHP) {
+  return wrapSvg(`Centrifugal Pump — Q = ${Q}, TDH = ${H}, Brake Power = ${BHP}`, `
+    <circle cx="230" cy="60" r="30" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="2"/>
+    <line x1="110" y1="60" x2="200" y2="60" stroke="#2C2C2E" stroke-width="4"/>
+    <line x1="230" y1="30" x2="230" y2="12" stroke="#90472D" stroke-width="4"/>
+    <text x="150" y="48" text-anchor="middle" font-size="11" fill="#2C2C2E">Q = ${esc(Q)}</text>
+    <text x="295" y="55" font-size="11" fill="#90472D" font-weight="600">TDH = ${esc(H)}</text>
+    <text x="295" y="72" font-size="11" fill="#2C2C2E" font-weight="600">BHP = ${esc(BHP)}</text>
+  `);
+}
+
+function systemCurveDiagram(Qop, Hop) {
+  return wrapSvg(`Pump & System Curve — Operating Point Q = ${Qop} gpm @ H = ${Hop}`, `
+    <polyline points="90,22 90,104 370,104" stroke="#2C2C2E" stroke-width="1.6"/>
+    <path d="M90,88 Q230,82 350,28" stroke="#2C2C2E" stroke-width="2" fill="none"/>
+    <path d="M90,28 Q230,36 350,94" stroke="#90472D" stroke-width="2" fill="none"/>
+    <circle cx="222" cy="60" r="5" fill="#90472D"/>
+    <text x="235" y="56" font-size="11" fill="#90472D" font-weight="600">(${esc(Qop)} gpm, ${esc(Hop)})</text>
   `);
 }
