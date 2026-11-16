@@ -1,5 +1,5 @@
 /**
- * Mechanics & Classical Mechanics SVG Diagrams (Boundary Conditions, Load Types, Mohr, Buckling)
+ * Mechanics & Classical Mechanics SVG Diagrams with Bending Moment Diagrams (BMD)
  */
 
 function esc(s) {
@@ -8,11 +8,20 @@ function esc(s) {
   }[m]));
 }
 
-export function wrapSvg(caption, inner) {
+export function wrapSvg(caption, inner, height = 132) {
   return `<figure class="sheet-diagram">
-    <svg viewBox="0 0 460 132" class="diagram-svg" fill="none" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>
+    <svg viewBox="0 0 460 ${height}" class="diagram-svg" fill="none" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>
     <figcaption>${esc(caption)}</figcaption>
   </figure>`;
+}
+
+export function bmdPanel(pathD, labelsHtml, x1 = 60, x2 = 400) {
+  return `
+    <line x1="${x1}" y1="156" x2="${x2}" y2="156" stroke="#6E6E73" stroke-width="1.2"/>
+    <text x="14" y="160" font-size="10" fill="#6E6E73" font-weight="700">BMD</text>
+    <path d="${pathD}" fill="#90472D" fill-opacity="0.14" stroke="#90472D" stroke-width="2"/>
+    ${labelsHtml}
+  `;
 }
 
 const PIN_L = `<polygon points="60,71 51,88 69,88" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.5"/><line x1="46" y1="92" x2="74" y2="92" stroke="#2C2C2E" stroke-width="1.5"/>`;
@@ -20,10 +29,12 @@ const ROLLER_R = `<polygon points="400,71 391,86 409,86" fill="#F2E4DD" stroke="
 const WALL_L = `<line x1="60" y1="42" x2="60" y2="96" stroke="#2C2C2E" stroke-width="3"/><path d="M50,48 L60,42 M50,58 L60,52 M50,68 L60,62 M50,78 L60,72 M50,88 L60,82 M50,96 L60,90" stroke="#6E6E73" stroke-width="1.2"/>`;
 const WALL_R = `<line x1="400" y1="42" x2="400" y2="96" stroke="#2C2C2E" stroke-width="3"/><path d="M400,48 L410,42 M400,58 L410,52 M400,68 L410,62 M400,78 L410,72 M400,88 L410,82 M400,96 L410,90" stroke="#6E6E73" stroke-width="1.2"/>`;
 
-function udlBlock(label) {
-  return `<rect x="60" y="34" width="340" height="22" fill="#90472D" fill-opacity="0.12" stroke="#90472D" stroke-width="1.2"/>
-    <path d="M90,34 V62 M140,34 V62 M190,34 V62 M240,34 V62 M290,34 V62 M340,34 V62 M380,34 V62" stroke="#90472D" stroke-width="1.3"/>
-    <text x="230" y="24" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">${esc(label)}</text>`;
+function udlBlock(label, x2 = 400) {
+  const w = x2 - 60;
+  const cx = 60 + w / 2;
+  return `<rect x="60" y="34" width="${w}" height="22" fill="#90472D" fill-opacity="0.12" stroke="#90472D" stroke-width="1.2"/>
+    <path d="M90,34 V62 M140,34 V62 M190,34 V62 M240,34 V62 M290,34 V62 M340,34 V62" stroke="#90472D" stroke-width="1.3"/>
+    <text x="${cx}" y="24" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">${esc(label)}</text>`;
 }
 
 function pointArrow(x, label) {
@@ -38,45 +49,75 @@ export function renderMechanicsDiagram(text, vars) {
   const P = vars.P || 'P';
 
   if (text.includes('propped cantilever')) {
-    return wrapSvg(`Propped Cantilever (Fixed-Pinned) — L = ${L}, w = ${w}, M_A = ${vars.M_A || 'M_A'}`, `
+    const mA = vars.M_A || 'wL²/8';
+    const mS = vars.M_span || '9wL²/128';
+    const bmd = bmdPanel(
+      'M60,156 L60,122 Q102,140 145,156 Q272,196 400,156 Z',
+      `<text x="66" y="118" font-size="10" fill="#90472D" font-weight="600">-${esc(mA)}</text>
+       <text x="272" y="192" text-anchor="middle" font-size="10" fill="#2C2C2E" font-weight="600">+${esc(mS)}</text>`
+    );
+    return wrapSvg(`Propped Cantilever (Fixed-Pinned) — L = ${L}, M_A = ${mA}, M_span = ${mS}`, `
       <line x1="60" y1="68" x2="400" y2="68" stroke="#2C2C2E" stroke-width="4"/>
       ${WALL_L}${ROLLER_R}${udlBlock(`w = ${w}`)}
-      <text x="230" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)} | R_A = ${esc(vars.R_A || '5wL/8')} | M_A = ${esc(vars.M_A || 'wL²/8')}</text>
-    `);
+      <text x="230" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)} | R_A = ${esc(vars.R_A || '5wL/8')}</text>
+      ${bmd}`, 206);
   }
   if (text.includes('fixed-ended') || text.includes('fixed end')) {
-    return wrapSvg(`Fixed-Ended Beam — L = ${L}, w = ${w}, M_end = ${vars.M_end || 'wL²/12'}`, `
+    const mE = vars.M_end || 'wL²/12';
+    const mM = vars.M_mid || 'wL²/24';
+    const bmd = bmdPanel(
+      'M60,156 L60,124 Q230,214 400,124 L400,156 Z',
+      `<text x="64" y="119" font-size="10" fill="#90472D" font-weight="600">-${esc(mE)}</text>
+       <text x="396" y="119" text-anchor="end" font-size="10" fill="#90472D" font-weight="600">-${esc(mE)}</text>
+       <text x="230" y="184" text-anchor="middle" font-size="10" fill="#2C2C2E" font-weight="600">+${esc(mM)}</text>`
+    );
+    return wrapSvg(`Fixed-Ended Beam — L = ${L}, M_end = ${mE}, M_mid = ${mM}`, `
       <line x1="60" y1="68" x2="400" y2="68" stroke="#2C2C2E" stroke-width="4"/>
       ${WALL_L}${WALL_R}${udlBlock(`w = ${w}`)}
-      <text x="230" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)} | M_end = ${esc(vars.M_end || 'M_end')} | M_mid = ${esc(vars.M_mid || 'M_mid')}</text>
-    `);
+      <text x="230" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
+      ${bmd}`, 206);
   }
   if (text.includes('cantilever')) {
     const isTip = text.includes('free end') || text.includes('tip point');
-    return wrapSvg(`Cantilever Beam — L = ${L}, M_max = ${vars.M_max || 'M_max'}`, `
+    const mMax = vars.M_max || 'M_max';
+    const bmdPath = isTip ? 'M60,156 L60,120 L380,156 Z' : 'M60,156 L60,120 Q180,152 380,156 Z';
+    const bmd = bmdPanel(bmdPath, `<text x="66" y="118" font-size="10" fill="#90472D" font-weight="600">-${esc(mMax)}</text>`, 60, 380);
+    return wrapSvg(`Cantilever Beam — L = ${L}, M_max = ${mMax}`, `
       <line x1="60" y1="68" x2="380" y2="68" stroke="#2C2C2E" stroke-width="4"/>
-      ${WALL_L}${isTip ? pointArrow(378, `P = ${P}`) : `<rect x="60" y="34" width="320" height="22" fill="#90472D" fill-opacity="0.12" stroke="#90472D" stroke-width="1.2"/><path d="M90,34 V62 M150,34 V62 M210,34 V62 M270,34 V62 M330,34 V62 M370,34 V62" stroke="#90472D" stroke-width="1.3"/><text x="220" y="24" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">w = ${esc(w)}</text>`}
-      <text x="220" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)} | M_max = ${esc(vars.M_max || 'M_max')} | δ_tip = ${esc(vars.delta_tip || 'δ_tip')}</text>
-    `);
+      ${WALL_L}${isTip ? pointArrow(378, `P = ${P}`) : udlBlock(`w = ${w}`, 380)}
+      <text x="220" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)} | δ_tip = ${esc(vars.delta_tip || 'δ_tip')}</text>
+      ${bmd}`, 206);
   }
   if (text.includes('two-span') || text.includes('2-span')) {
-    return wrapSvg(`Two-Span Continuous Beam — Spans L = ${L}, M_int = ${vars.M_int || 'wL²/8'}`, `
+    const mInt = vars.M_int || 'wL²/8';
+    const mPos = vars.M_pos || '9wL²/128';
+    const bmd = bmdPanel(
+      'M60,156 Q122,194 185,156 Q208,138 230,122 Q252,138 275,156 Q338,194 400,156 Z',
+      `<text x="230" y="116" text-anchor="middle" font-size="10" fill="#90472D" font-weight="600">-${esc(mInt)}</text>
+       <text x="122" y="192" text-anchor="middle" font-size="10" fill="#2C2C2E" font-weight="600">+${esc(mPos)}</text>
+       <text x="338" y="192" text-anchor="middle" font-size="10" fill="#2C2C2E" font-weight="600">+${esc(mPos)}</text>`
+    );
+    return wrapSvg(`Two-Span Continuous Beam — Spans L = ${L}, M_int = ${mInt}`, `
       <line x1="60" y1="68" x2="400" y2="68" stroke="#2C2C2E" stroke-width="4"/>
       ${PIN_L}${ROLLER_R}<polygon points="230,71 221,88 239,88" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.5"/>
       ${udlBlock(`w = ${w}`)}
-      <text x="145" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
-      <text x="315" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
-    `);
+      <text x="145" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
+      <text x="315" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
+      ${bmd}`, 206);
   }
   if (text.includes('point load') || text.includes('symmetric')) {
     const isTwo = text.includes('two equal') || text.includes('symmetric');
     const isEcc = text.includes('eccentric') || text.includes('any position');
-    const arrows = isTwo ? pointArrow(160, `P = ${P}`) + pointArrow(300, `P = ${P}`) : pointArrow(isEcc ? 180 : 230, `P = ${P}`);
-    return wrapSvg(`Simply Supported Beam (Point Load) — L = ${L}, M_max = ${vars.M_max || 'M_max'}`, `
+    const px = isEcc ? 180 : 230;
+    const arrows = isTwo ? pointArrow(160, `P = ${P}`) + pointArrow(300, `P = ${P}`) : pointArrow(px, `P = ${P}`);
+    const mMax = vars.M_max || 'M_max';
+    const bmdPath = isTwo ? 'M60,156 L160,192 L300,192 L400,156 Z' : `M60,156 L${px},194 L400,156 Z`;
+    const bmd = bmdPanel(bmdPath, `<text x="${isTwo ? 230 : px}" y="205" text-anchor="middle" font-size="10" fill="#90472D" font-weight="600">+${esc(mMax)}</text>`);
+    return wrapSvg(`Simply Supported Beam (Point Load) — L = ${L}, M_max = ${mMax}`, `
       <line x1="60" y1="68" x2="400" y2="68" stroke="#2C2C2E" stroke-width="4"/>
       ${PIN_L}${ROLLER_R}${arrows}
-      <text x="230" y="116" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)} | M_max = ${esc(vars.M_max || 'M_max')}</text>
-    `);
+      <text x="230" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
+      ${bmd}`, 212);
   }
   if (text.includes('mohr')) {
     return wrapSvg(`Mohr's Circle — σ_1 = ${vars.sigma_1 || 'σ_1'}, σ_2 = ${vars.sigma_2 || 'σ_2'}, τ_max = ${vars.tau_max || 'τ_max'}`, `

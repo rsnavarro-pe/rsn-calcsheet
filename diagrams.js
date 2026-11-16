@@ -1,7 +1,7 @@
 /**
  * Parametric Engineering SVG Illustrations for Worksheets
  */
-import { renderMechanicsDiagram, wrapSvg } from './diagrams-mechanics.js';
+import { renderMechanicsDiagram, wrapSvg, bmdPanel } from './diagrams-mechanics.js';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({
@@ -61,7 +61,11 @@ export function renderSheetDiagram(sheet, results) {
 }
 
 function beamDiagram(L, wu, mu) {
-  return wrapSvg(`Simply Supported Beam — Span L = ${L}, Factored Load = ${wu}, M_u = ${mu}`, `
+  const bmd = bmdPanel(
+    'M60,156 Q230,224 400,156 Z',
+    `<text x="230" y="203" text-anchor="middle" font-size="10" fill="#90472D" font-weight="600">+${esc(mu)}</text>`
+  );
+  return wrapSvg(`Simply Supported Beam — Span L = ${L}, Load = ${wu}, M_max = ${mu}`, `
     <line x1="60" y1="68" x2="400" y2="68" stroke="#2C2C2E" stroke-width="4"/>
     <polygon points="60,71 51,88 69,88" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.5"/>
     <polygon points="400,71 391,88 409,88" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.5"/>
@@ -69,10 +73,9 @@ function beamDiagram(L, wu, mu) {
     <line x1="386" y1="92" x2="414" y2="92" stroke="#2C2C2E" stroke-width="1.5"/>
     <rect x="60" y="34" width="340" height="22" fill="#90472D" fill-opacity="0.12" stroke="#90472D" stroke-width="1.2"/>
     <path d="M90,34 V62 M140,34 V62 M190,34 V62 M240,34 V62 M290,34 V62 M340,34 V62 M380,34 V62" stroke="#90472D" stroke-width="1.3"/>
-    <text x="230" y="24" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">w_u = ${esc(wu)}</text>
-    <line x1="60" y1="112" x2="400" y2="112" stroke="#6E6E73" stroke-width="1"/>
-    <text x="230" y="125" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
-  `);
+    <text x="230" y="24" text-anchor="middle" font-size="11" fill="#90472D" font-weight="600">w = ${esc(wu)}</text>
+    <text x="230" y="108" text-anchor="middle" font-size="11" fill="#2C2C2E">L = ${esc(L)}</text>
+    ${bmd}`, 212);
 }
 
 function timberJoistDiagram(L, s) {
