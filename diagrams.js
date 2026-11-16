@@ -42,17 +42,20 @@ export function renderSheetDiagram(sheet, results) {
   if (title.includes('manning') || title.includes('channel')) {
     return channelDiagram(vars.b || '4 ft', vars.y || '1.5 ft', vars.V || 'V');
   }
-  if (title.includes('pipe flow') || title.includes('darcy')) {
-    return pipeFlowDiagram(vars.D || '6.065 in', vars.L || '500 ft', vars.V || 'V', vars.h_tot_DW || 'h_tot');
+  if (title.includes('pipe flow') || title.includes('darcy') || title.includes('reynolds')) {
+    return pipeFlowDiagram(vars.D || vars.d || '6.065 in', vars.L || '500 ft', vars.V || 'V', vars.h_tot_DW || vars.h_f || 'h_f');
   }
-  if (title.includes('valve') || title.includes('enlargement')) {
-    return enlargementDiagram(vars.d_1 || '4.03 in', vars.d_2 || '6.07 in', vars.dP_valve || 'dP');
+  if (title.includes('valve') || title.includes('enlargement') || title.includes('k-factor')) {
+    return enlargementDiagram(vars.d_1 || vars.d || '4.03 in', vars.d_2 || vars.d || '6.07 in', vars.dP_valve || 'dP');
   }
   if (title.includes('venturi') || title.includes('meter')) {
     return venturiDiagram(vars.D || '6.07 in', vars.d_throat || '3.50 in', vars.Q_meter || 'Q');
   }
-  if (title.includes('pump power') || title.includes('npsha')) {
-    return pumpDiagram(vars.Q || '350 gpm', vars.H_tdh || '65 ft', vars.BHP || 'BHP');
+  if (title.includes('pump power') || title.includes('npsha') || title.includes('pump sizing')) {
+    return pumpDiagram(vars.Q || '350 gpm', vars.H_tdh || vars.TDH || '65 ft', vars.BHP || 'BHP');
+  }
+  if (title.includes('steam') || title.includes('gas')) {
+    return pipeFlowDiagram((vars.d_in || '5.76') + ' in', vars.L || '400 ft', 'Steam', vars.dP_steam || 'dP');
   }
   if (title.includes('system curve') || title.includes('operating point')) {
     return systemCurveDiagram(vars.Q_op || '365 gpm', vars.H_sys_op || '68.6 ft');
