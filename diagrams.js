@@ -1,6 +1,7 @@
 /**
  * Parametric Engineering SVG Illustrations for Worksheets
  */
+import { renderMechanicsDiagram, wrapSvg } from './diagrams-mechanics.js';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({
@@ -14,9 +15,14 @@ export function renderSheetDiagram(sheet, results) {
     if (r.type === 'calc') vars[r.name] = r.result;
   }
   const title = (sheet.title || '').toLowerCase();
+  const bodyHead = (sheet.body || '').slice(0, 300).toLowerCase();
+  const text = `${title} ${bodyHead}`;
 
-  if (title.includes('steel') || title.includes('beam') && !title.includes('concrete')) {
-    return beamDiagram(vars.L || '24 ft', vars.w_u || 'w_u', vars.Mu || 'M_u');
+  const mech = renderMechanicsDiagram(text, vars);
+  if (mech) return mech;
+
+  if (title.includes('steel') || (title.includes('beam') && !title.includes('concrete'))) {
+    return beamDiagram(vars.L || '24 ft', vars.w_u || vars.w || 'w_u', vars.Mu || vars.M_max || 'M_u');
   }
   if (title.includes('timber') || title.includes('wood') || title.includes('joist')) {
     return timberJoistDiagram(vars.L || '14.5 ft', vars.spacing || '16 in');
@@ -52,13 +58,6 @@ export function renderSheetDiagram(sheet, results) {
     return systemCurveDiagram(vars.Q_op || '365 gpm', vars.H_sys_op || '68.6 ft');
   }
   return '';
-}
-
-function wrapSvg(caption, inner) {
-  return `<figure class="sheet-diagram">
-    <svg viewBox="0 0 460 132" class="diagram-svg" fill="none" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>
-    <figcaption>${esc(caption)}</figcaption>
-  </figure>`;
 }
 
 function beamDiagram(L, wu, mu) {
