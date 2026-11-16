@@ -4,10 +4,11 @@
 import {
   state, getActiveSheet, setActiveSheet, updateActiveSheetBody,
   updateActiveSheetMeta, updateProjectMeta, addSheetFromTemplate,
-  deleteSheet, replaceProjectState
+  addCustomSheet, deleteSheet, replaceProjectState
 } from './state.js';
 import { evaluateSheet } from './parser.js';
 import { openModuleModal } from './modal.js';
+import { openFormulaModal } from './formula-modal.js';
 import { formatVarName, formatMathExpr } from './math-format.js';
 import { renderSheetDiagram } from './diagrams.js';
 import { highlightCode } from './highlight.js';
@@ -29,6 +30,24 @@ function bindTopBar() {
       addSheetFromTemplate(key);
       viewMode = 'split';
       renderAll();
+    });
+  });
+
+  $('btn-open-formulas').addEventListener('click', () => {
+    openFormulaModal({
+      onInsert: (f) => {
+        const editor = $('calc-editor');
+        const prefix = editor.value.trim() ? '\n\n' : '';
+        editor.value = editor.value + prefix + f.code;
+        updateActiveSheetBody(editor.value);
+        viewMode = 'split';
+        renderAll();
+      },
+      onNewSheet: (f) => {
+        addCustomSheet({ title: f.title, codeRef: f.group, body: `# ${f.title}\n// ${f.desc}\n\n${f.code}` });
+        viewMode = 'split';
+        renderAll();
+      }
     });
   });
 

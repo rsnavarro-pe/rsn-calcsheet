@@ -65,6 +65,7 @@ const UNIT_DEFS = {
   'sec': { scale: 1, dim: [0, 0, 1, 0], label: 's' },
   'min': { scale: 60, dim: [0, 0, 1, 0], label: 'min' },
   'hr': { scale: 3600, dim: [0, 0, 1, 0], label: 'hr' },
+  'Hz': { scale: 1, dim: [0, 0, -1, 0], label: 'Hz' },
 
   // Civil/Site Velocity & Flow
   'fps': { scale: 12, dim: [1, 0, -1, 0], label: 'ft/s' },
@@ -92,6 +93,7 @@ const DEFAULT_DISPLAY = {
   '-3,1,0,0': { unit: 'pcf', scale: 1 / 1728 },
   '1,1,0,0': { unit: 'kip·ft', scale: 12000 },
   '0,0,1,0': { unit: 's', scale: 1 },
+  '0,0,-1,0': { unit: 'Hz', scale: 1 },
   '1,0,-1,0': { unit: 'ft/s', scale: 12 },
   '3,0,-1,0': { unit: 'cfs', scale: 1728 },
   '1,1,-1,0': { unit: 'hp', scale: 6600 },

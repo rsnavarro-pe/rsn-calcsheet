@@ -18,6 +18,7 @@
       <button class="mode-tab" data-mode="project">Project data</button>
     </nav>
     <div class="topbar-actions">
+      <button id="btn-open-formulas" class="btn">Formulas</button>
       <button id="btn-export-json" class="btn">Export JSON</button>
       <label class="btn file-btn">Import JSON<input id="input-import-json" type="file" accept=".json" hidden></label>
       <button id="btn-print" class="btn btn-primary">Print / PDF (8.5&quot;×11&quot;)</button>
@@ -116,6 +117,28 @@
         <div class="modal-actions">
           <button id="modal-cancel-btn" class="btn btn-light">Cancel</button>
           <button id="modal-add-btn" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="formula-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <input id="formula-search" type="search" placeholder="Search Mechanics &amp; Classical Mechanics formulas (e.g. beam, Mohr, Euler, torsion)...">
+        <button id="fmodal-close-btn" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <div id="formula-group-bar" class="f-group-bar"></div>
+      <div class="f-split">
+        <div id="formula-list" class="f-list"></div>
+        <pre id="formula-code-preview" class="f-preview"></pre>
+      </div>
+      <div class="modal-footer">
+        <span class="modal-legend">US Customary • Mechanics &amp; Classical Mechanics</span>
+        <div class="modal-actions">
+          <button id="fmodal-cancel-btn" class="btn btn-light">Cancel</button>
+          <button id="fmodal-newsheet-btn" class="btn">New Sheet</button>
+          <button id="fmodal-insert-btn" class="btn btn-primary">Insert into Sheet</button>
         </div>
       </div>
     </div>

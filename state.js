@@ -87,6 +87,19 @@ export function addSheetFromTemplate(templateKey) {
   saveState();
 }
 
+export function addCustomSheet({ title, codeRef, body }) {
+  const id = 's' + Date.now();
+  state.sheets.push({
+    id,
+    title: title || `Sheet ${state.sheets.length + 1}`,
+    discipline: 'Mechanics',
+    codeRef: codeRef || 'Mechanics & Classical Mechanics',
+    body: body || ''
+  });
+  state.activeSheetId = id;
+  saveState();
+}
+
 export function deleteSheet(id) {
   if (state.sheets.length <= 1) return;
   state.sheets = state.sheets.filter(s => s.id !== id);
