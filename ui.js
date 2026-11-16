@@ -10,6 +10,7 @@ import { evaluateSheet } from './parser.js';
 import { openModuleModal } from './modal.js';
 import { formatVarName, formatMathExpr } from './math-format.js';
 import { renderSheetDiagram } from './diagrams.js';
+import { highlightCode } from './highlight.js';
 
 const $ = (id) => document.getElementById(id);
 let viewMode = 'split'; // 'split' | 'preview' | 'project'
@@ -106,6 +107,9 @@ function bindEditor() {
   });
   editor.addEventListener('scroll', () => {
     gutter.scrollTop = editor.scrollTop;
+    const hl = $('code-highlight');
+    hl.scrollTop = editor.scrollTop;
+    hl.scrollLeft = editor.scrollLeft;
   });
 }
 
@@ -218,9 +222,11 @@ function renderEditorInputs() {
 }
 
 function renderLineGutter() {
-  const lines = ($('calc-editor').value || '').split('\n').length;
+  const val = $('calc-editor').value || '';
+  const lines = val.split('\n').length;
   $('line-count-label').textContent = `${lines} lines`;
   $('line-gutter').textContent = Array.from({ length: lines }, (_, i) => i + 1).join('\n');
+  $('code-highlight').innerHTML = highlightCode(val);
 }
 
 function renderPreview() {
