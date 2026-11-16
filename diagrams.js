@@ -60,6 +60,21 @@ export function renderSheetDiagram(sheet, results) {
   if (title.includes('system curve') || title.includes('operating point')) {
     return systemCurveDiagram(vars.Q_op || '365 gpm', vars.H_sys_op || '68.6 ft');
   }
+  if (title.includes('series') || title.includes('parallel')) {
+    return pipeFlowDiagram(vars.D_3 || '8 in', vars.L_3 || '800 ft', vars.Q_1 || 'Q_1', vars.h_total || 'h_total');
+  }
+  if (title.includes('surge') || title.includes('hammer')) {
+    return pipeFlowDiagram(vars.D || '8 in', vars.L || '2400 ft', vars.a_wave || 'a', vars.P_peak || 'P_peak');
+  }
+  if (title.includes('wet well') || title.includes('lift station')) {
+    return pumpDiagram(vars.Q_firm || '360 gpm', vars.h_active || 'h', vars.V_well || 'V_well');
+  }
+  if (title.includes('bypass') || title.includes('orifice')) {
+    return venturiDiagram(vars.H_pump_min || '140 ft', vars.d_orf || 'd_orf', vars.Q_min || 'Q_min');
+  }
+  if (title.includes('vfd') || title.includes('affinity')) {
+    return systemCurveDiagram(vars.Q_vfd || '300 gpm', vars.H_vfd || '45 ft');
+  }
   return '';
 }
 

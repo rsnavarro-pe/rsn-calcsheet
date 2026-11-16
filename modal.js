@@ -72,6 +72,16 @@ const MODULE_GROUPS = [
       { key: 'crane_pump', title: 'CT-3: Pump sizing & BHP (400 ft lift)', desc: 'Crane 7-15: TDH, WHP & BHP', badge: 'published', icon: 'civil' },
       { key: 'crane_gas_steam', title: 'CT-4: Steam & gas pipeline drop', desc: 'Crane 7-10: Mass-flow Darcy dP', badge: 'published', icon: 'civil' }
     ]
+  },
+  {
+    group: 'PIPE SYSTEMS (NETWORKS & SURGE)',
+    items: [
+      { key: 'ps_series_parallel', title: 'PS-1: Series & parallel pipe network', desc: 'Branch flow split & combined head loss', badge: 'published', icon: 'civil' },
+      { key: 'ps_surge', title: 'PS-2: Water hammer & surge screening', desc: 'Wave speed a, Joukowsky dP & peak P', badge: 'published', icon: 'civil' },
+      { key: 'ps_station', title: 'PS-3: Lift station wet well & firm cap', desc: 'Firm capacity & active drawdown volume', badge: 'published', icon: 'civil' },
+      { key: 'ps_bypass', title: 'PS-4: Minimum-flow bypass orifice', desc: 'Recirculation orifice sizing (Cd, dH)', badge: 'published', icon: 'civil' },
+      { key: 'ps_vfd', title: 'PS-5: VFD affinity & energy savings', desc: 'Speed ratio r, P ~ r^3 & annual kWh', badge: 'published', icon: 'civil' }
+    ]
   }
 ];
 
