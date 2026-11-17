@@ -148,6 +148,16 @@ const MODULE_GROUPS = [
       { key: 'mech_3span_udl', title: 'MC-10: Three-span continuous — UDL', desc: 'Equal spans reactions & moments', badge: 'published', icon: 'steel' },
       { key: 'mech_portal_frame', title: 'MC-11: Portal frame — lateral load', desc: 'Pinned-base reactions & knee moment', badge: 'published', icon: 'steel' }
     ]
+  },
+  {
+    group: 'SPREADSHEETS (SCHEDULES & FINANCE)',
+    items: [
+      { key: 'sp:beam_schedule', title: 'SP-1: Steel beam schedule', desc: 'Multi-beam Mu, phi*Mn & DCR grid', badge: 'published', icon: 'steel' },
+      { key: 'sp:storm_schedule', title: 'SP-2: Storm drain pipe schedule', desc: 'Rational Q = CiA & Qcap grid', badge: 'published', icon: 'runoff' },
+      { key: 'sp:interest_schedule', title: 'SP-3: Simple & compound interest', desc: 'Annual, quarterly, monthly & daily FV', badge: 'published', icon: 'curve' },
+      { key: 'sp:loan_schedule', title: 'SP-4: Loan & equipment PMT', desc: 'Amortized monthly payment schedule', badge: 'published', icon: 'curve' },
+      { key: 'sp:npv_schedule', title: 'SP-5: Project cash flow & NPV', desc: 'Discounted present worth & viability', badge: 'published', icon: 'curve' }
+    ]
   }
 ];
 

@@ -25,6 +25,42 @@ export const SAMPLE_SPREADSHEETS = {
       ['P-3', '2.10', '0.80', '4.20', '=B4*C4*D4', '10.50', '=E4/F4'],
       ['Total', '=SUM(B2:B4)', '', '', '=SUM(E2:E4)', '', '=MAX(G2:G4)']
     ]
+  },
+  interest_schedule: {
+    title: 'SP-3: Simple & Compound Interest Schedule',
+    codeRef: 'Engineering Economics / Finance',
+    rows: [
+      ['Option', 'Principal ($)', 'Rate (dec)', 'Years', 'Comp/Yr (n)', 'Simple FV ($)', 'Compound FV ($)'],
+      ['Annual', '10000', '0.06', '5', '1', '=B2*(1+C2*D2)', '=B2*(1+C2/E2)^(E2*D2)'],
+      ['Quarterly', '10000', '0.06', '5', '4', '=B3*(1+C3*D3)', '=B3*(1+C3/E3)^(E3*D3)'],
+      ['Monthly', '10000', '0.06', '5', '12', '=B4*(1+C4*D4)', '=B4*(1+C4/E4)^(E4*D4)'],
+      ['Daily', '10000', '0.06', '5', '365', '=B5*(1+C5*D5)', '=B5*(1+C5/E5)^(E5*D5)'],
+      ['Max FV', '', '', '', '', '=MAX(F2:F5)', '=MAX(G2:G5)']
+    ]
+  },
+  loan_schedule: {
+    title: 'SP-4: Loan & Equipment Financing (PMT)',
+    codeRef: 'Engineering Economics / Finance',
+    rows: [
+      ['Scenario', 'Principal ($)', 'Annual Rate', 'Years', 'Mo. Rate', 'Months', 'Monthly PMT ($)'],
+      ['3-Yr Equip', '50000', '0.065', '3', '=C2/12', '=D2*12', '=B2*E2/(1-(1+E2)^(-F2))'],
+      ['5-Yr Equip', '50000', '0.065', '5', '=C3/12', '=D3*12', '=B3*E3/(1-(1+E3)^(-F3))'],
+      ['10-Yr Cap', '150000', '0.055', '10', '=C4/12', '=D4*12', '=B4*E4/(1-(1+E4)^(-F4))'],
+      ['Min PMT', '', '', '', '', '', '=MIN(G2:G4)']
+    ]
+  },
+  npv_schedule: {
+    title: 'SP-5: Project Cash Flow & NPV Analysis',
+    codeRef: 'Engineering Economics / Present Worth',
+    rows: [
+      ['Year', 'Cash Flow ($)', 'Disc. Rate', 'PV Factor', 'Present Worth ($)', 'Decision'],
+      ['0', '-100000', '0.07', '=1/(1+C2)^A2', '=B2*D2', ''],
+      ['1', '28000', '0.07', '=1/(1+C3)^A3', '=B3*D3', ''],
+      ['2', '30000', '0.07', '=1/(1+C4)^A4', '=B4*D4', ''],
+      ['3', '32000', '0.07', '=1/(1+C5)^A5', '=B5*D5', ''],
+      ['4', '35000', '0.07', '=1/(1+C6)^A6', '=B6*D6', ''],
+      ['NPV', '=SUM(B2:B6)', '', '', '=SUM(E2:E6)', '=IF(E7>=0,"PASS","FAIL")']
+    ]
   }
 };
 

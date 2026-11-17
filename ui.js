@@ -32,8 +32,14 @@ export function initUI() {
 function bindTopBar() {
   $('btn-open-modal').addEventListener('click', () => {
     openModuleModal((key) => {
-      addSheetFromTemplate(key);
-      viewMode = 'split';
+      if (key.startsWith('sp:')) {
+        addSpreadsheetSheet(key.slice(3));
+        viewMode = 'split';
+        midMode = 'form';
+      } else {
+        addSheetFromTemplate(key);
+        viewMode = 'split';
+      }
       renderAll();
     });
   });
@@ -50,8 +56,9 @@ function bindTopBar() {
   });
 
   $('btn-new-grid').addEventListener('click', () => {
+    const keys = ['beam_schedule', 'storm_schedule', 'interest_schedule', 'loan_schedule', 'npv_schedule'];
     const count = state.sheets.filter(s => s.type === 'spreadsheet').length;
-    addSpreadsheetSheet(count % 2 === 0 ? 'beam_schedule' : 'storm_schedule');
+    addSpreadsheetSheet(keys[count % keys.length]);
     viewMode = 'split';
     midMode = 'form';
     renderAll();
