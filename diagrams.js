@@ -2,6 +2,7 @@
  * Parametric Engineering SVG Illustrations for Worksheets
  */
 import { renderMechanicsDiagram, wrapSvg, bmdPanel } from './diagrams-mechanics.js';
+import { renderAreaDiagram } from './diagrams-areas.js';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({
@@ -74,6 +75,10 @@ export function renderSheetDiagram(sheet, results) {
   }
   if (title.includes('vfd') || title.includes('affinity')) {
     return systemCurveDiagram(vars.Q_vfd || '300 gpm', vars.H_vfd || '45 ft');
+  }
+  if (sheet.discipline === 'Areas') {
+    const areaSvg = renderAreaDiagram(title, vars);
+    if (areaSvg) return areaSvg;
   }
   if (title.includes('circular pipe')) {
     return circularPipeGeoDiagram(vars.d || '12 in', vars.t || '0.5 in');

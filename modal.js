@@ -80,6 +80,26 @@ const MODULE_GROUPS = [
       { key: 'geo_ellipse_pipe', title: 'G-4: Elliptical pipe section', desc: 'Area, I_y, I_z & radii of gyration', badge: 'published', icon: 'circpipe' },
       { key: 'geo_equi_tri', title: 'G-5: Equilateral triangle section', desc: 'Height, area, centroid, I & r', badge: 'published', icon: 'geotri' }
     ]
+  },
+  {
+    group: 'AREAS (15 CALCULATORS)',
+    items: [
+      { key: 'area_circle', title: 'A-1: Circle', desc: 'Area & circumference', badge: 'published', icon: 'circle' },
+      { key: 'area_triangle', title: 'A-2: Triangle (3 sides)', desc: "Heron's formula & perimeter", badge: 'published', icon: 'geotri' },
+      { key: 'area_triangle_h', title: 'A-3: Triangle (height)', desc: 'Base & height area', badge: 'published', icon: 'geotri' },
+      { key: 'area_right_tri', title: 'A-4: Right triangle', desc: 'Hypotenuse, area & perimeter', badge: 'published', icon: 'geotri' },
+      { key: 'area_equi_tri', title: 'A-5: Equilateral triangle', desc: 'Height, area & perimeter', badge: 'published', icon: 'geotri' },
+      { key: 'area_rect', title: 'A-6: Rectangle', desc: 'Area, perimeter & diagonal', badge: 'published', icon: 'georect' },
+      { key: 'area_square', title: 'A-7: Square', desc: 'Area, perimeter & diagonal', badge: 'published', icon: 'georect' },
+      { key: 'area_trapezoid', title: 'A-8: Trapezoid', desc: 'Midsegment & area', badge: 'published', icon: 'trapezoid' },
+      { key: 'area_polygon', title: 'A-9: Regular polygon', desc: 'Apothem, circumradius & area', badge: 'published', icon: 'polygon' },
+      { key: 'area_ellipse', title: 'A-10: Ellipse', desc: 'Area & Ramanujan perimeter', badge: 'published', icon: 'ellipse' },
+      { key: 'area_parabola', title: 'A-11: Parabola', desc: 'Parabolic segment area', badge: 'published', icon: 'parabola' },
+      { key: 'area_sector_chord', title: 'A-12: Sector (chord)', desc: 'Angle, arc & sector area', badge: 'published', icon: 'sector' },
+      { key: 'area_sector_angle', title: 'A-13: Sector (angle)', desc: 'Arc, chord & sector area', badge: 'published', icon: 'sector' },
+      { key: 'area_segment_chord', title: 'A-14: Segment (chord)', desc: 'Angle, rise & segment area', badge: 'published', icon: 'segment' },
+      { key: 'area_segment_angle', title: 'A-15: Segment (angle)', desc: 'Rise, chord & segment area', badge: 'published', icon: 'segment' }
+    ]
   }
 ];
 

@@ -46,5 +46,12 @@ export const MODAL_ICONS = {
   vfd: `<svg ${A}><polyline points="22,14 22,60 102,60" stroke="#2C2C2E" stroke-width="1.5"/><path d="M22,20 Q62,24 96,46" stroke="#2C2C2E" stroke-width="1.8"/><path d="M22,34 Q54,38 80,54" stroke="#90472D" stroke-width="1.8" stroke-dasharray="3 2"/></svg>`,
   circpipe: `<svg ${A}><circle cx="60" cy="38" r="24" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/><circle cx="60" cy="38" r="14" fill="#FFFFFF" stroke="#2C2C2E" stroke-width="1.4"/><line x1="28" y1="38" x2="92" y2="38" stroke="#6E6E73" stroke-width="1" stroke-dasharray="4 2"/><line x1="60" y1="10" x2="60" y2="66" stroke="#6E6E73" stroke-width="1" stroke-dasharray="4 2"/></svg>`,
   georect: `<svg ${A}><rect x="34" y="14" width="52" height="48" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/><line x1="24" y1="38" x2="96" y2="38" stroke="#6E6E73" stroke-width="1" stroke-dasharray="4 2"/><line x1="60" y1="8" x2="60" y2="68" stroke="#6E6E73" stroke-width="1" stroke-dasharray="4 2"/></svg>`,
-  geotri: `<svg ${A}><polygon points="30,60 90,60 30,16" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/><circle cx="50" cy="45" r="2.5" fill="#90472D"/></svg>`
+  geotri: `<svg ${A}><polygon points="30,60 90,60 30,16" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/><circle cx="50" cy="45" r="2.5" fill="#90472D"/></svg>`,
+  circle: `<svg ${A}><circle cx="60" cy="38" r="24" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/><line x1="60" y1="38" x2="84" y2="38" stroke="#90472D" stroke-width="1.8"/></svg>`,
+  trapezoid: `<svg ${A}><polygon points="24,58 96,58 80,18 40,18" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/><line x1="40" y1="18" x2="40" y2="58" stroke="#90472D" stroke-width="1.3" stroke-dasharray="3 2"/></svg>`,
+  polygon: `<svg ${A}><polygon points="60,12 84,26 84,52 60,66 36,52 36,26" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/></svg>`,
+  ellipse: `<svg ${A}><ellipse cx="60" cy="38" rx="34" ry="20" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/><line x1="60" y1="38" x2="94" y2="38" stroke="#90472D" stroke-width="1.5"/></svg>`,
+  parabola: `<svg ${A}><path d="M24,60 Q60,0 96,60 Z" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/></svg>`,
+  sector: `<svg ${A}><path d="M60,58 L36,22 A42,42 0 0,1 84,22 Z" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/></svg>`,
+  segment: `<svg ${A}><path d="M28,48 A38,38 0 0,1 92,48 Z" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.6"/></svg>`
 };
