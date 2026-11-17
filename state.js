@@ -37,6 +37,11 @@ function loadState() {
           parsed.meta.checker = 'RSN';
           parsed.meta.firmName = 'Ronnie S. Navarro, PE';
         }
+        parsed.sheets.forEach(s => {
+          if (typeof s.body === 'string' && s.title && s.title.includes('CT-2')) {
+            s.body = s.body.replace('d = pipe("6in", "id") -> in', 'd = 6.065 in');
+          }
+        });
         return parsed;
       }
     }
