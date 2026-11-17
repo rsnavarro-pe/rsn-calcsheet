@@ -78,6 +78,19 @@ const MODULE_GROUPS = [
     ]
   },
   {
+    group: 'PIPELINE HYDRAULICS (UNIQUE MODULES)',
+    items: [
+      { key: 'ph_gravity_sewer', title: 'PH-1: Circular gravity sewer', desc: "Manning's full-pipe V & Q", badge: 'published', icon: 'pipe' },
+      { key: 'ph_box_culvert', title: 'PH-2: Concrete box culvert (HDS-5)', desc: 'Barrel friction & entrance head loss', badge: 'published', icon: 'channel' },
+      { key: 'ph_hyd_jump', title: 'PH-3: Hydraulic jump (Belanger)', desc: 'Fr_1, sequent depth y_2 & basin L', badge: 'published', icon: 'channel' },
+      { key: 'ph_thrust_block', title: 'PH-4: Thrust block & bearing', desc: 'Bend resultant thrust & soil area', badge: 'published', icon: 'footing' },
+      { key: 'ph_nat_gas_weymouth', title: 'PH-5: Natural gas (Weymouth)', desc: 'High-pressure gas SCFD & MMSCFD', badge: 'published', icon: 'steam' },
+      { key: 'ph_choked_gas', title: 'PH-6: Sonic choked gas flow', desc: 'Critical pressure ratio & P_choked', badge: 'published', icon: 'steam' },
+      { key: 'ph_control_valve_cav', title: 'PH-7: Control valve & cavitation', desc: 'Choked dP (F_L) & required Cv', badge: 'published', icon: 'valve' },
+      { key: 'ph_asme_wall', title: 'PH-8: ASME B31.8 / B31.4 wall', desc: "Barlow's formula & corrosion allow.", badge: 'published', icon: 'circpipe' }
+    ]
+  },
+  {
     group: 'GEOMETRICAL PROPERTIES',
     items: [
       { key: 'geo_pipe', title: 'G-1: Circular pipe section', desc: 'Area, centroid, I_y, I_x, I_t, W_t & r', badge: 'published', icon: 'circpipe' },

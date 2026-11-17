@@ -76,6 +76,18 @@ export function renderSheetDiagram(sheet, results) {
   if (title.includes('vfd') || title.includes('affinity')) {
     return systemCurveDiagram(vars.Q_vfd || '300 gpm', vars.H_vfd || '45 ft');
   }
+  if (title.includes('gravity sewer') || title.includes('box culvert') || title.includes('hydraulic jump')) {
+    return channelDiagram(vars.D || vars.B_span || vars.y_1 || '18 in', vars.y_2 || vars.D_rise || '4 ft', vars.V_full || vars.V || vars.V_1 || 'V');
+  }
+  if (title.includes('thrust block')) {
+    return footingDiagram(vars.A_prov || '12 ft2', vars.theta || '45 deg', vars.T_thrust || 'T');
+  }
+  if (title.includes('natural gas') || title.includes('choked gas') || title.includes('b31')) {
+    return pipeFlowDiagram(vars.D_od || vars.D_in || '8 in', vars.L_mi || '15 mi', vars.P_1 || vars.P_design || 'P_1', vars.t_req || vars.P_choked || vars.Q_mmscfd || '');
+  }
+  if (title.includes('control valve')) {
+    return enlargementDiagram(vars.P_1 || '120 psi', vars.P_2 || '45 psi', vars.Cv_req || 'Cv');
+  }
   if (sheet.discipline === 'Areas' || sheet.discipline === 'Mathematics') {
     const areaSvg = renderAreaDiagram(title, vars);
     if (areaSvg) return areaSvg;
