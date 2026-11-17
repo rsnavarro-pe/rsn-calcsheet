@@ -40,7 +40,8 @@ check(V, 8.0 fps, "Pipe Velocity Screening (V <= 8.0 ft/s)")`
 
 ## 1. Valve & Pipe Inputs
 Cv = 600
-d = pipe("6in", "id") -> in
+// Pipe inside diameter (default 6-in Sch 40 = 6.065 in; editable)
+d = 6.065 in
 f_T = 0.015
 Q = 350 gpm
 
