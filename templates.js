@@ -1,5 +1,5 @@
 /**
- * Combined US Structural, Civil/Site, Hydraulics, Crane TP-410, Pipe Systems, Geometry, Areas & Math Templates
+ * Combined US Structural, Civil/Site, Hydraulics, Crane TP-410, Pipe Systems, Geometry, Areas, Math & Mechanics Templates
  */
 import { STRUCTURAL_TEMPLATES } from './templates-structural.js';
 import { STRUCTURAL_DESIGN_TEMPLATES } from './templates-structural-design.js';
@@ -10,6 +10,7 @@ import { PIPE_SYSTEMS_TEMPLATES } from './templates-pipe-systems.js';
 import { GEOMETRY_TEMPLATES } from './templates-geometry.js';
 import { AREAS_TEMPLATES } from './templates-areas.js';
 import { MATH_TEMPLATES } from './templates-math.js';
+import { MECHANICS_EXTRA_TEMPLATES } from './templates-mechanics-extra.js';
 
 export const TEMPLATES = {
   ...STRUCTURAL_TEMPLATES,
@@ -20,5 +21,6 @@ export const TEMPLATES = {
   ...PIPE_SYSTEMS_TEMPLATES,
   ...GEOMETRY_TEMPLATES,
   ...AREAS_TEMPLATES,
-  ...MATH_TEMPLATES
+  ...MATH_TEMPLATES,
+  ...MECHANICS_EXTRA_TEMPLATES
 };

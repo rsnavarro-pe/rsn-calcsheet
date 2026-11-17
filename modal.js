@@ -119,6 +119,22 @@ const MODULE_GROUPS = [
       { key: 'math_linear_2x2', title: 'M-7: 2x2 linear system', desc: "Cramer's rule determinant, x & y", badge: 'published', icon: 'curve' },
       { key: 'math_trig_sas', title: 'M-8: Triangle solver (SAS)', desc: 'Law of cosines, area & angles', badge: 'published', icon: 'geotri' }
     ]
+  },
+  {
+    group: 'MECHANICS — BEAMS & FRAMES',
+    items: [
+      { key: 'mech_ss_moment', title: 'MC-1: Simply supported — moment', desc: 'Concentrated moment M_0 at a', badge: 'published', icon: 'steel' },
+      { key: 'mech_ss_triangular', title: 'MC-2: Simply supported — triangular', desc: 'Linearly varying load 0 to w_max', badge: 'published', icon: 'steel' },
+      { key: 'mech_ss_partial_udl', title: 'MC-3: Simply supported — partial UDL', desc: 'Partial UDL w over length c', badge: 'published', icon: 'steel' },
+      { key: 'mech_cant_moment', title: 'MC-4: Cantilever — end moment', desc: 'Tip moment M_0 & deflection', badge: 'published', icon: 'steel' },
+      { key: 'mech_cant_tri', title: 'MC-5: Cantilever — triangular load', desc: 'Linear load w_max & tip deflection', badge: 'published', icon: 'steel' },
+      { key: 'mech_propped_point', title: 'MC-6: Propped cantilever — point load', desc: 'Midspan P, M_A & M_mid', badge: 'published', icon: 'steel' },
+      { key: 'mech_fixed_point', title: 'MC-7: Fixed-ended — point load', desc: 'Midspan P, M_end & M_mid', badge: 'published', icon: 'steel' },
+      { key: 'mech_fixed_moment', title: 'MC-8: Fixed-ended — moment', desc: 'Concentrated moment M_0 at a', badge: 'published', icon: 'steel' },
+      { key: 'mech_overhang_udl', title: 'MC-9: Beam with overhang — UDL', desc: 'Cantilever overhang M_neg & M_pos', badge: 'published', icon: 'steel' },
+      { key: 'mech_3span_udl', title: 'MC-10: Three-span continuous — UDL', desc: 'Equal spans reactions & moments', badge: 'published', icon: 'steel' },
+      { key: 'mech_portal_frame', title: 'MC-11: Portal frame — lateral load', desc: 'Pinned-base reactions & knee moment', badge: 'published', icon: 'steel' }
+    ]
   }
 ];
 

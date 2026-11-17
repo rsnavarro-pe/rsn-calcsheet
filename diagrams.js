@@ -22,8 +22,8 @@ export function renderSheetDiagram(sheet, results) {
   const mech = renderMechanicsDiagram(text, vars);
   if (mech) return mech;
 
-  if (title.includes('steel') || (title.includes('beam') && !title.includes('concrete'))) {
-    return beamDiagram(vars.L || '24 ft', vars.w_u || vars.w || 'w_u', vars.Mu || vars.M_max || 'M_u');
+  if (title.includes('steel') || title.includes('simply supported') || title.includes('overhang') || title.includes('three-span') || title.includes('portal frame') || (title.includes('beam') && !title.includes('concrete'))) {
+    return beamDiagram(vars.L || vars.L_beam || '24 ft', vars.w_u || vars.w || vars.w_max || vars.M_0 || vars.H_lat || 'w', vars.Mu || vars.M_max || vars.M_pos || vars.M_int || vars.M_knee || vars.M_left || 'M');
   }
   if (title.includes('timber') || title.includes('wood') || title.includes('joist')) {
     return timberJoistDiagram(vars.L || '14.5 ft', vars.spacing || '16 in');
