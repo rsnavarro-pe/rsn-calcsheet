@@ -151,6 +151,9 @@ function handleKeypadAction(act) {
     const tail = lineEnd === -1 ? '' : editor.value.slice(lineEnd);
     editor.value = editor.value.slice(0, lineStart) + tail;
     editor.selectionStart = editor.selectionEnd = lineStart;
+  } else if (act === 'clearall') {
+    editor.value = '';
+    editor.selectionStart = editor.selectionEnd = 0;
   }
   editor.focus();
   updateActiveSheetBody(editor.value);

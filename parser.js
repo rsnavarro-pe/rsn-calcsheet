@@ -27,6 +27,12 @@ const FUNCTIONS = {
   atan: (a) => ({ val: Math.atan(a.val), dim: [0, 0, 0, 1] }),
   asin: (a) => ({ val: Math.asin(a.val), dim: [0, 0, 0, 1] }),
   acos: (a) => ({ val: Math.acos(a.val), dim: [0, 0, 0, 1] }),
+  sinh: (a) => ({ val: Math.sinh(a.val), dim: DIM_ZERO }),
+  cosh: (a) => ({ val: Math.cosh(a.val), dim: DIM_ZERO }),
+  tanh: (a) => ({ val: Math.tanh(a.val), dim: DIM_ZERO }),
+  asinh: (a) => ({ val: Math.asinh(a.val), dim: DIM_ZERO }),
+  acosh: (a) => ({ val: Math.acosh(a.val), dim: DIM_ZERO }),
+  atanh: (a) => ({ val: Math.atanh(a.val), dim: DIM_ZERO }),
   min: (...args) => pickExtreme(args, Math.min),
   max: (...args) => pickExtreme(args, Math.max),
   aisc: (sec, prop) => lookupSection(AISC_W_SHAPES, sec, prop),
@@ -280,6 +286,22 @@ export function evaluateSheet(text) {
           pass: dcr <= 1.0,
           demandText: `${dFmt.text} ${dFmt.unit}`.trim(),
           capacityText: `${cFmt.text} ${cFmt.unit}`.trim()
+        });
+        continue;
+      }
+
+      // Equality check: lhs ≡ rhs
+      if (raw.includes('≡')) {
+        const [lhs, rhs] = raw.split('≡').map(s => s.trim());
+        const lRes = evaluateExpression(lhs, scope);
+        const rRes = evaluateExpression(rhs, scope);
+        const eq = sameDim(lRes.dim, rRes.dim) && Math.abs(lRes.val - rRes.val) < 1e-9;
+        results.push({
+          type: 'expr',
+          lineNo,
+          formula: raw,
+          substituted: `${lRes.sub} ≡ ${rRes.sub}`,
+          result: eq ? '1 (true)' : '0 (false)'
         });
         continue;
       }
