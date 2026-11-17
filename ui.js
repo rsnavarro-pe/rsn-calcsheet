@@ -13,10 +13,12 @@ import { formatVarName, formatMathExpr } from './math-format.js';
 import { renderSheetDiagram } from './diagrams.js';
 import { highlightCode } from './highlight.js';
 import { renderInputForm, parseInputLiteral } from './input-form.js';
+import { renderKeypad } from './keypad.js';
 
 const $ = (id) => document.getElementById(id);
 let viewMode = 'split'; // 'split' | 'preview' | 'project'
 let midMode = 'form'; // 'form' | 'code'
+let showKeypad = true;
 
 export function initUI() {
   bindTopBar();
@@ -33,6 +35,17 @@ function bindTopBar() {
       viewMode = 'split';
       renderAll();
     });
+  });
+
+  $('btn-new-blank').addEventListener('click', () => {
+    addCustomSheet({
+      title: 'New Calculation',
+      codeRef: 'US Customary',
+      body: '# New Calculation\n// Enter variables and formulas below.\n\na = 10\nb = 5\nc = a + b'
+    });
+    viewMode = 'split';
+    midMode = 'code';
+    renderAll();
   });
 
   $('btn-open-formulas').addEventListener('click', () => {
@@ -98,6 +111,52 @@ function bindModeTabs() {
   });
   $('btn-mid-form').addEventListener('click', () => { midMode = 'form'; applyMidMode(); });
   $('btn-mid-code').addEventListener('click', () => { midMode = 'code'; applyMidMode(); });
+  $('btn-toggle-keypad').addEventListener('click', () => {
+    showKeypad = !showKeypad;
+    $('btn-toggle-keypad').classList.toggle('active', showKeypad);
+    $('calc-keypad').classList.toggle('hidden', !showKeypad);
+  });
+  renderKeypad($('calc-keypad'), insertAtCursor, handleKeypadAction);
+}
+
+function insertAtCursor(snippet) {
+  const editor = $('calc-editor');
+  const start = editor.selectionStart ?? editor.value.length;
+  const end = editor.selectionEnd ?? start;
+  editor.value = editor.value.slice(0, start) + snippet + editor.value.slice(end);
+  editor.selectionStart = editor.selectionEnd = start + snippet.length;
+  editor.focus();
+  updateActiveSheetBody(editor.value);
+  renderLineGutter();
+  renderSidebar();
+  renderPreview();
+}
+
+function handleKeypadAction(act) {
+  const editor = $('calc-editor');
+  const start = editor.selectionStart ?? editor.value.length;
+  const end = editor.selectionEnd ?? start;
+  if (act === 'newline') return insertAtCursor('\n');
+  if (act === 'backspace') {
+    if (start !== end) {
+      editor.value = editor.value.slice(0, start) + editor.value.slice(end);
+      editor.selectionStart = editor.selectionEnd = start;
+    } else if (start > 0) {
+      editor.value = editor.value.slice(0, start - 1) + editor.value.slice(start);
+      editor.selectionStart = editor.selectionEnd = start - 1;
+    }
+  } else if (act === 'clearline') {
+    const lineStart = editor.value.lastIndexOf('\n', start - 1) + 1;
+    const lineEnd = editor.value.indexOf('\n', start);
+    const tail = lineEnd === -1 ? '' : editor.value.slice(lineEnd);
+    editor.value = editor.value.slice(0, lineStart) + tail;
+    editor.selectionStart = editor.selectionEnd = lineStart;
+  }
+  editor.focus();
+  updateActiveSheetBody(editor.value);
+  renderLineGutter();
+  renderSidebar();
+  renderPreview();
 }
 
 function applyMidMode() {

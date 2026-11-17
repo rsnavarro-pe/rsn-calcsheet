@@ -277,6 +277,19 @@ body {
 .cp-input-val { background: #FFFDE0; border-bottom: 1px solid #C8BEA8; padding: 0 4px; font-family: var(--font-sans); font-size: 14px; }
 .cp-check-ref { font-size: 12px; color: var(--color-pass); font-weight: 600; }
 
+.sheet-actions-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.calc-keypad { border-top: 1px solid var(--color-border); background: #FAF8F6; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
+.kp-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
+.kp-ctrl-row { grid-template-columns: repeat(3, 1fr); }
+.kp-btn {
+  font-family: var(--font-mono); font-size: 11px; padding: 5px 2px; border: 1px solid var(--color-border);
+  border-radius: 3px; background: var(--color-white); color: var(--color-graphite); cursor: pointer;
+}
+.kp-btn:hover { background: var(--color-terratint); border-color: var(--color-terracotta); }
+.kp-num { font-weight: 700; }
+.kp-op { color: var(--color-terracotta); font-weight: 700; }
+.kp-ctrl { font-family: var(--font-sans); font-weight: 600; background: var(--color-offwhite); }
+
 @page { size: letter; margin: 0.45in; }
 @media print {
   body { background: var(--color-white); height: auto; }
