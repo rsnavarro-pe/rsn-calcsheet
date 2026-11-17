@@ -12,9 +12,11 @@ import { openFormulaModal } from './formula-modal.js';
 import { formatVarName, formatMathExpr } from './math-format.js';
 import { renderSheetDiagram } from './diagrams.js';
 import { highlightCode } from './highlight.js';
+import { renderInputForm, parseInputLiteral } from './input-form.js';
 
 const $ = (id) => document.getElementById(id);
 let viewMode = 'split'; // 'split' | 'preview' | 'project'
+let midMode = 'form'; // 'form' | 'code'
 
 export function initUI() {
   bindTopBar();
@@ -94,6 +96,15 @@ function bindModeTabs() {
       applyViewMode();
     });
   });
+  $('btn-mid-form').addEventListener('click', () => { midMode = 'form'; applyMidMode(); });
+  $('btn-mid-code').addEventListener('click', () => { midMode = 'code'; applyMidMode(); });
+}
+
+function applyMidMode() {
+  $('btn-mid-form').classList.toggle('active', midMode === 'form');
+  $('btn-mid-code').classList.toggle('active', midMode === 'code');
+  $('input-form-pane').classList.toggle('hidden', midMode !== 'form');
+  $('code-editor-area').classList.toggle('hidden', midMode !== 'code');
 }
 
 function applyViewMode() {
@@ -263,6 +274,23 @@ function renderPreview() {
 
   const sheetIndex = state.sheets.findIndex(s => s.id === sheet.id) + 1;
   const diagramHtml = renderSheetDiagram(sheet, results);
+  renderInputForm($('input-form-pane'), sheet, results, diagramHtml, (lineNo, nextVal, unit) => {
+    const lines = (sheet.body || '').split('\n');
+    const idx = lineNo - 1;
+    if (lines[idx] === undefined) return;
+    const eqPos = lines[idx].indexOf('=');
+    const arrowPos = lines[idx].lastIndexOf('->');
+    const lhs = lines[idx].slice(0, eqPos + 1);
+    const arrow = arrowPos > eqPos ? ' ' + lines[idx].slice(arrowPos) : '';
+    lines[idx] = `${lhs} ${nextVal}${unit ? ' ' + unit : ''}${arrow}`;
+    const nextBody = lines.join('\n');
+    updateActiveSheetBody(nextBody);
+    $('calc-editor').value = nextBody;
+    renderLineGutter();
+    renderSidebar();
+    renderPreview();
+  });
+
   $('sheet-preview').innerHTML = `
     <div class="title-block">
       <div class="tb-main">
@@ -278,22 +306,29 @@ function renderPreview() {
       </div>
       <div class="tb-seal">PE / SE<br>SEAL</div>
     </div>
-    ${diagramHtml}
-    <div class="calc-flow">${results.map(renderLine).join('')}</div>
+    <div class="cp-sheet">
+      ${diagramHtml ? `<div class="cp-diagram-float">${diagramHtml}</div>` : ''}
+      <div class="cp-flow">${results.map(renderLine).join('')}</div>
+    </div>
   `;
 }
 
 function renderLine(r) {
   switch (r.type) {
-    case 'blank': return '<div class="calc-spacer"></div>';
-    case 'h1': return `<h1 class="calc-h1">${esc(r.text)}</h1>`;
-    case 'h2': return `<h2 class="calc-h2">${esc(r.text)}</h2>`;
-    case 'h3': return `<h3 class="calc-h3">${esc(r.text)}</h3>`;
-    case 'note': return `<p class="calc-note">${esc(r.text)}</p>`;
-    case 'calc':
-      return `<div class="calc-row"><div class="calc-sym math-expr">${formatVarName(r.name)} = ${formatMathExpr(r.formula)}</div><div class="calc-sub math-expr">= ${formatMathExpr(r.substituted)}</div><div class="calc-res">= <span>${esc(r.result)}</span></div></div>`;
+    case 'blank': return '<div class="cp-spacer"></div>';
+    case 'h1': return `<h1 class="cp-h1">${esc(r.text)}</h1>`;
+    case 'h2': return `<h2 class="cp-h2">${esc(r.text)}</h2>`;
+    case 'h3': return `<h3 class="cp-h3">${esc(r.text)}</h3>`;
+    case 'note': return `<p class="cp-note">${esc(r.text)}</p>`;
+    case 'calc': {
+      const lit = parseInputLiteral(r.formula);
+      if (lit) {
+        return `<div class="cp-line math-expr"><span class="cp-var">${formatVarName(r.name)}</span> = <span class="cp-input-val">${esc(lit.val)}</span>${lit.unit ? ` <span class="cp-unit">${esc(lit.unit)}</span>` : ''}</div>`;
+      }
+      return `<div class="cp-line math-expr"><span class="cp-var">${formatVarName(r.name)}</span> = ${formatMathExpr(r.formula)} = ${formatMathExpr(r.substituted)} = <strong class="cp-res">${esc(r.result)}</strong></div>`;
+    }
     case 'expr':
-      return `<div class="calc-row"><div class="calc-sym math-expr">${formatMathExpr(r.formula)}</div><div class="calc-sub math-expr">= ${formatMathExpr(r.substituted)}</div><div class="calc-res">= <span>${esc(r.result)}</span></div></div>`;
+      return `<div class="cp-line math-expr">${formatMathExpr(r.formula)} = ${formatMathExpr(r.substituted)} = <strong class="cp-res">${esc(r.result)}</strong></div>`;
     case 'check': {
       const pct = Math.min(100, Math.max(0, r.dcr * 100));
       const cls = r.pass ? 'pass' : 'fail';

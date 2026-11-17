@@ -70,6 +70,16 @@ const MODULE_GROUPS = [
       { key: 'ps_bypass', title: 'PS-4: Minimum-flow bypass orifice', desc: 'Recirculation orifice sizing (Cd, dH)', badge: 'published', icon: 'orifice' },
       { key: 'ps_vfd', title: 'PS-5: VFD affinity & energy savings', desc: 'Speed ratio r, P ~ r^3 & annual kWh', badge: 'published', icon: 'vfd' }
     ]
+  },
+  {
+    group: 'GEOMETRICAL PROPERTIES',
+    items: [
+      { key: 'geo_pipe', title: 'G-1: Circular pipe section', desc: 'Area, centroid, I_y, I_x, I_t, W_t & r', badge: 'published', icon: 'circpipe' },
+      { key: 'geo_rect', title: 'G-2: Rectangular section', desc: 'Area, perimeter, I_y, I_z, W_y, W_z & r', badge: 'published', icon: 'georect' },
+      { key: 'geo_right_tri', title: 'G-3: Right triangle section', desc: 'Area, centroid (b/3, h/3), I & r', badge: 'published', icon: 'geotri' },
+      { key: 'geo_ellipse_pipe', title: 'G-4: Elliptical pipe section', desc: 'Area, I_y, I_z & radii of gyration', badge: 'published', icon: 'circpipe' },
+      { key: 'geo_equi_tri', title: 'G-5: Equilateral triangle section', desc: 'Height, area, centroid, I & r', badge: 'published', icon: 'geotri' }
+    ]
   }
 ];
 

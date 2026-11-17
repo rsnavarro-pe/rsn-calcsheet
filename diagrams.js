@@ -75,7 +75,57 @@ export function renderSheetDiagram(sheet, results) {
   if (title.includes('vfd') || title.includes('affinity')) {
     return systemCurveDiagram(vars.Q_vfd || '300 gpm', vars.H_vfd || '45 ft');
   }
+  if (title.includes('circular pipe')) {
+    return circularPipeGeoDiagram(vars.d || '12 in', vars.t || '0.5 in');
+  }
+  if (title.includes('rectangle')) {
+    return rectGeoDiagram(vars.b || '6 in', vars.h || '12 in');
+  }
+  if (title.includes('triangle')) {
+    return triGeoDiagram(vars.b || vars.a || '8 in', vars.h || '6 in', title.includes('equilateral'));
+  }
+  if (title.includes('elliptical')) {
+    return circularPipeGeoDiagram(vars.a || '6 in', vars.t || '0.38 in');
+  }
   return '';
+}
+
+function circularPipeGeoDiagram(d, t) {
+  return wrapSvg(`Circular Pipe — d = ${d}, t = ${t}`, `
+    <circle cx="190" cy="66" r="42" fill="#F5DFA6" stroke="#2C2C2E" stroke-width="1.6"/>
+    <circle cx="190" cy="66" r="27" fill="#FFFFFF" stroke="#2C2C2E" stroke-width="1.4"/>
+    <line x1="130" y1="66" x2="250" y2="66" stroke="#6E6E73" stroke-width="1" stroke-dasharray="5 3"/>
+    <line x1="190" y1="12" x2="190" y2="120" stroke="#6E6E73" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="122" y="70" font-size="11" font-style="italic" fill="#2C2C2E">y</text>
+    <text x="254" y="70" font-size="11" font-style="italic" fill="#2C2C2E">y</text>
+    <text x="194" y="14" font-size="11" font-style="italic" fill="#2C2C2E">z</text>
+    <text x="194" y="124" font-size="11" font-style="italic" fill="#2C2C2E">z</text>
+    <line x1="274" y1="24" x2="274" y2="108" stroke="#6E6E73" stroke-width="1"/>
+    <line x1="268" y1="24" x2="280" y2="24" stroke="#6E6E73" stroke-width="1"/>
+    <line x1="268" y1="108" x2="280" y2="108" stroke="#6E6E73" stroke-width="1"/>
+    <text x="284" y="70" font-size="11" font-style="italic" fill="#2C2C2E">d = ${esc(d)}</text>
+    <text x="116" y="34" font-size="11" font-style="italic" fill="#90472D">t = ${esc(t)}</text>
+  `);
+}
+
+function rectGeoDiagram(b, h) {
+  return wrapSvg(`Rectangle — b = ${b}, h = ${h}`, `
+    <rect x="180" y="20" width="90" height="92" fill="#F5DFA6" stroke="#2C2C2E" stroke-width="1.6"/>
+    <line x1="158" y1="66" x2="292" y2="66" stroke="#6E6E73" stroke-width="1" stroke-dasharray="5 3"/>
+    <line x1="225" y1="10" x2="225" y2="122" stroke="#6E6E73" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="225" y="126" text-anchor="middle" font-size="11" fill="#2C2C2E">b = ${esc(b)}</text>
+    <text x="298" y="70" font-size="11" fill="#2C2C2E">h = ${esc(h)}</text>
+  `);
+}
+
+function triGeoDiagram(b, h, equi) {
+  const pts = equi ? '170,108 280,108 225,20' : '175,108 285,108 175,20';
+  return wrapSvg(`${equi ? 'Equilateral' : 'Right'} Triangle — base = ${b}, h = ${h}`, `
+    <polygon points="${pts}" fill="#F5DFA6" stroke="#2C2C2E" stroke-width="1.6"/>
+    <circle cx="${equi ? 225 : 211}" cy="79" r="3" fill="#90472D"/>
+    <text x="228" y="124" text-anchor="middle" font-size="11" fill="#2C2C2E">b = ${esc(b)}</text>
+    <text x="300" y="68" font-size="11" fill="#2C2C2E">h = ${esc(h)}</text>
+  `);
 }
 
 function beamDiagram(L, wu, mu) {

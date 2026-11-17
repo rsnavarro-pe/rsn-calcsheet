@@ -248,6 +248,36 @@ body {
 .f-item-desc { font-size: 11px; color: #6E6E73; }
 .f-preview { margin: 0; padding: 14px; overflow: auto; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; background: #FAF8F6; color: var(--color-graphite); }
 
+.sub-toggle { display: flex; gap: 3px; }
+.sub-tab { border: none; background: transparent; padding: 3px 9px; border-radius: 3px; font-family: var(--font-sans); font-size: 11px; font-weight: 700; color: #6E6E73; cursor: pointer; text-transform: uppercase; }
+.sub-tab.active { background: var(--color-terratint); color: var(--color-terracotta); }
+.code-editor-area { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.input-form-pane { flex: 1; overflow-y: auto; padding: 18px 20px; background: var(--color-white); }
+
+.cp-sheet { position: relative; }
+.cp-sheet::after { content: ''; display: table; clear: both; }
+.cp-diagram-float { float: right; width: 220px; margin: 4px 0 12px 16px; }
+.cp-diagram-float .sheet-diagram { margin: 0; padding: 6px; background: #FFFFFF; border-color: #E6E1DC; }
+.cp-diagram-float .sheet-diagram figcaption { font-size: 10px; }
+.cp-h1 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid #E6E1DC; }
+.cp-h2 { font-family: var(--font-sans); font-size: 14px; font-weight: 600; margin: 12px 0 4px; color: var(--color-graphite); }
+.cp-h3 { font-size: 13px; font-weight: 600; margin: 8px 0 3px; }
+.cp-note { font-size: 12px; color: #6E6E73; margin: 2px 0 6px; font-style: italic; }
+.cp-spacer { height: 6px; }
+.cp-line { margin: 5px 0; font-size: 15px; line-height: 1.7; }
+.cp-var { color: #0066CC; }
+.cp-unit { font-family: var(--font-sans); font-size: 13px; color: var(--color-graphite); }
+.cp-res { color: var(--color-graphite); font-family: var(--font-sans); font-size: 14px; }
+.cp-input-box {
+  width: 68px; padding: 2px 6px; margin: 0 3px; text-align: right;
+  font-family: var(--font-sans); font-size: 14px; color: var(--color-graphite);
+  background: #FFFDE0; border: 1px solid #D4CBB8; border-radius: 3px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+}
+.cp-input-box:focus { outline: 2px solid #0066CC; background: #FFFCE8; }
+.cp-input-val { background: #FFFDE0; border-bottom: 1px solid #C8BEA8; padding: 0 4px; font-family: var(--font-sans); font-size: 14px; }
+.cp-check-ref { font-size: 12px; color: var(--color-pass); font-weight: 600; }
+
 @page { size: letter; margin: 0.45in; }
 @media print {
   body { background: var(--color-white); height: auto; }
