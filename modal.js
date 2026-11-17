@@ -1,19 +1,7 @@
 /**
  * Module Picker Modal — Open CalcSheet Studio style (US-Only Modules)
  */
-import { TEMPLATES } from './templates.js';
-
-const SVG_ATTR = 'viewBox="0 0 120 76" class="mod-svg" fill="none" stroke-linecap="round" stroke-linejoin="round"';
-
-const ICONS = {
-  blank: `<svg ${SVG_ATTR}><polygon points="22,52 64,24 98,38 56,66" fill="#F5F0EC" stroke="#2C2C2E" stroke-width="1.4"/><line x1="42" y1="48" x2="72" y2="32" stroke="#90472D" stroke-width="2.5"/><polygon points="34,42 52,32 48,46" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.1"/></svg>`,
-  steel: `<svg ${SVG_ATTR}><line x1="18" y1="46" x2="82" y2="46" stroke="#2C2C2E" stroke-width="3"/><polygon points="18,48 13,56 23,56" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.2"/><polygon points="82,48 77,56 87,56" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.2"/><path d="M22,30 H78 M28,30 V45 M40,30 V45 M52,30 V45 M64,30 V45 M76,30 V45" stroke="#90472D" stroke-width="1.3"/><path d="M95,24 H107 M101,24 V52 M95,52 H107" stroke="#2C2C2E" stroke-width="2.5"/></svg>`,
-  timber: `<svg ${SVG_ATTR}><polygon points="16,52 62,24 104,34 58,64" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.2"/><line x1="26" y1="54" x2="72" y2="26" stroke="#90472D" stroke-width="2.5"/><line x1="38" y1="57" x2="84" y2="29" stroke="#90472D" stroke-width="2.5"/><line x1="50" y1="60" x2="96" y2="32" stroke="#90472D" stroke-width="2.5"/></svg>`,
-  concrete: `<svg ${SVG_ATTR}><polygon points="22,42 78,20 98,28 42,50" fill="#E6E1DC" stroke="#2C2C2E" stroke-width="1.3"/><polygon points="22,42 42,50 42,64 22,56" fill="#D5CFC9" stroke="#2C2C2E" stroke-width="1.3"/><polygon points="42,50 98,28 98,42 42,64" fill="#EFEAE6" stroke="#2C2C2E" stroke-width="1.3"/><line x1="46" y1="56" x2="94" y2="37" stroke="#90472D" stroke-width="2"/></svg>`,
-  footing: `<svg ${SVG_ATTR}><polygon points="24,46 60,32 96,46 60,60" fill="#E6E1DC" stroke="#2C2C2E" stroke-width="1.3"/><polygon points="24,46 60,60 60,68 24,54" fill="#D5CFC9" stroke="#2C2C2E" stroke-width="1.3"/><polygon points="60,60 96,46 96,54 60,68" fill="#EFEAE6" stroke="#2C2C2E" stroke-width="1.3"/><rect x="52" y="16" width="16" height="24" fill="#90472D" fill-opacity="0.2" stroke="#90472D" stroke-width="1.5"/></svg>`,
-  wind: `<svg ${SVG_ATTR}><path d="M22,28 H68 C74,28 74,20 68,20 C64,20 63,23 63,24" stroke="#2C2C2E" stroke-width="1.8"/><path d="M18,38 H82 C88,38 88,46 82,46 C78,46 77,43 77,42" stroke="#90472D" stroke-width="1.8"/><polygon points="50,58 76,46 102,58" fill="#F2E4DD" stroke="#2C2C2E" stroke-width="1.3"/></svg>`,
-  civil: `<svg ${SVG_ATTR}><polygon points="18,46 34,46 44,58 76,58 86,46 102,46" stroke="#2C2C2E" stroke-width="1.8"/><path d="M39,52 H81" stroke="#90472D" stroke-width="2" stroke-dasharray="4 3"/><path d="M28,26 C38,20 48,32 58,26 C68,20 78,32 88,26" stroke="#2C2C2E" stroke-width="1.5"/></svg>`
-};
+import { MODAL_ICONS } from './modal-icons.js';
 
 const MODULE_GROUPS = [
   {
@@ -50,37 +38,37 @@ const MODULE_GROUPS = [
   {
     group: 'CIVIL / SITE',
     items: [
-      { key: 'rational_runoff', title: 'Rational storm runoff (HEC-22)', desc: 'Composite C, Q = CiA & 18" RCP check', badge: 'published', icon: 'civil' },
-      { key: 'mannings_channel', title: "Open-channel Manning's (HEC-15)", desc: 'Trapezoidal swale velocity & capacity', badge: 'published', icon: 'civil' }
+      { key: 'rational_runoff', title: 'Rational storm runoff (HEC-22)', desc: 'Composite C, Q = CiA & 18" RCP check', badge: 'published', icon: 'runoff' },
+      { key: 'mannings_channel', title: "Open-channel Manning's (HEC-15)", desc: 'Trapezoidal swale velocity & capacity', badge: 'published', icon: 'channel' }
     ]
   },
   {
     group: 'HYDRAULICS — FLOW OF WATER',
     items: [
-      { key: 'wf_pipe', title: 'Pipe flow (Darcy & Hazen-Williams)', desc: 'ASME Sch 40 ID, head loss & velocity', badge: 'published', icon: 'civil' },
-      { key: 'wf_valves', title: 'Valves, fittings & enlargement', desc: 'Crane TP-410 K-method & valve Cv drop', badge: 'published', icon: 'civil' },
-      { key: 'wf_meter', title: 'Venturi differential flow meter', desc: 'Beta ratio, dP head & flow recovery', badge: 'published', icon: 'civil' },
-      { key: 'wf_pump', title: 'Centrifugal pump power & NPSHa', desc: 'BHP, water HP & cavitation margin', badge: 'published', icon: 'civil' },
-      { key: 'wf_system', title: 'Pump & system curve operating point', desc: 'H = H_static + R*Q^2 intersection', badge: 'published', icon: 'civil' }
+      { key: 'wf_pipe', title: 'Pipe flow (Darcy & Hazen-Williams)', desc: 'ASME Sch 40 ID, head loss & velocity', badge: 'published', icon: 'pipe' },
+      { key: 'wf_valves', title: 'Valves, fittings & enlargement', desc: 'Crane TP-410 K-method & valve Cv drop', badge: 'published', icon: 'valve' },
+      { key: 'wf_meter', title: 'Venturi differential flow meter', desc: 'Beta ratio, dP head & flow recovery', badge: 'published', icon: 'meter' },
+      { key: 'wf_pump', title: 'Centrifugal pump power & NPSHa', desc: 'BHP, water HP & cavitation margin', badge: 'published', icon: 'pump' },
+      { key: 'wf_system', title: 'Pump & system curve operating point', desc: 'H = H_static + R*Q^2 intersection', badge: 'published', icon: 'curve' }
     ]
   },
   {
     group: 'CRANE TP-410 MODULES',
     items: [
-      { key: 'crane_pipe', title: 'CT-1: Pipe flow & Reynolds number', desc: 'Crane 7-1: Re, smooth-pipe f & dP', badge: 'published', icon: 'civil' },
-      { key: 'crane_valve_k', title: 'CT-2: Valve & fitting K-factor / Cv', desc: 'Crane 7-2: K = 891*d^4/Cv^2 & L_eq', badge: 'published', icon: 'civil' },
-      { key: 'crane_pump', title: 'CT-3: Pump sizing & BHP (400 ft lift)', desc: 'Crane 7-15: TDH, WHP & BHP', badge: 'published', icon: 'civil' },
-      { key: 'crane_gas_steam', title: 'CT-4: Steam & gas pipeline drop', desc: 'Crane 7-10: Mass-flow Darcy dP', badge: 'published', icon: 'civil' }
+      { key: 'crane_pipe', title: 'CT-1: Pipe flow & Reynolds number', desc: 'Crane 7-1: Re, smooth-pipe f & dP', badge: 'published', icon: 'reynolds' },
+      { key: 'crane_valve_k', title: 'CT-2: Valve & fitting K-factor / Cv', desc: 'Crane 7-2: K = 891*d^4/Cv^2 & L_eq', badge: 'published', icon: 'valve' },
+      { key: 'crane_pump', title: 'CT-3: Pump sizing & BHP (400 ft lift)', desc: 'Crane 7-15: TDH, WHP & BHP', badge: 'published', icon: 'pump' },
+      { key: 'crane_gas_steam', title: 'CT-4: Steam & gas pipeline drop', desc: 'Crane 7-10: Mass-flow Darcy dP', badge: 'published', icon: 'steam' }
     ]
   },
   {
     group: 'PIPE SYSTEMS (NETWORKS & SURGE)',
     items: [
-      { key: 'ps_series_parallel', title: 'PS-1: Series & parallel pipe network', desc: 'Branch flow split & combined head loss', badge: 'published', icon: 'civil' },
-      { key: 'ps_surge', title: 'PS-2: Water hammer & surge screening', desc: 'Wave speed a, Joukowsky dP & peak P', badge: 'published', icon: 'civil' },
-      { key: 'ps_station', title: 'PS-3: Lift station wet well & firm cap', desc: 'Firm capacity & active drawdown volume', badge: 'published', icon: 'civil' },
-      { key: 'ps_bypass', title: 'PS-4: Minimum-flow bypass orifice', desc: 'Recirculation orifice sizing (Cd, dH)', badge: 'published', icon: 'civil' },
-      { key: 'ps_vfd', title: 'PS-5: VFD affinity & energy savings', desc: 'Speed ratio r, P ~ r^3 & annual kWh', badge: 'published', icon: 'civil' }
+      { key: 'ps_series_parallel', title: 'PS-1: Series & parallel pipe network', desc: 'Branch flow split & combined head loss', badge: 'published', icon: 'network' },
+      { key: 'ps_surge', title: 'PS-2: Water hammer & surge screening', desc: 'Wave speed a, Joukowsky dP & peak P', badge: 'published', icon: 'surge' },
+      { key: 'ps_station', title: 'PS-3: Lift station wet well & firm cap', desc: 'Firm capacity & active drawdown volume', badge: 'published', icon: 'wetwell' },
+      { key: 'ps_bypass', title: 'PS-4: Minimum-flow bypass orifice', desc: 'Recirculation orifice sizing (Cd, dH)', badge: 'published', icon: 'orifice' },
+      { key: 'ps_vfd', title: 'PS-5: VFD affinity & energy savings', desc: 'Speed ratio r, P ~ r^3 & annual kWh', badge: 'published', icon: 'vfd' }
     ]
   }
 ];
@@ -133,7 +121,7 @@ function renderModuleGrid(query) {
       card.type = 'button';
       card.className = `mod-card ${item.key === selectedKey ? 'selected' : ''}`;
       card.innerHTML = `
-        <div class="mod-thumb">${ICONS[item.icon] || ICONS.blank}</div>
+        <div class="mod-thumb">${MODAL_ICONS[item.icon] || MODAL_ICONS.blank}</div>
         <div class="mod-title"><span class="mod-dot"></span>${item.title}</div>
         <div class="mod-meta"><span class="mod-desc">${item.desc}</span><span class="mod-badge">${item.badge}</span></div>
       `;
