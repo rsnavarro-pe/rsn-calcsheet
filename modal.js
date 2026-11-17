@@ -26,13 +26,19 @@ const MODULE_GROUPS = [
     group: 'CONCRETE & FOUNDATION',
     items: [
       { key: 'concrete_beam', title: 'Reinforced concrete beam (ACI 318)', desc: 'Flexure & #3 stirrup shear strength', badge: 'published', icon: 'concrete' },
-      { key: 'footing', title: 'Spread footing (IBC / ACI 318)', desc: 'Allowable bearing & one-way shear', badge: 'published', icon: 'footing' }
+      { key: 'footing', title: 'Spread footing (IBC / ACI 318)', desc: 'Allowable bearing & one-way shear', badge: 'published', icon: 'footing' },
+      { key: 'sd_rc_column', title: 'SD-1: RC column axial & bending', desc: 'ACI 318-19 tied column Pu / phi*Pn', badge: 'published', icon: 'concrete' },
+      { key: 'sd_punching_shear', title: 'SD-2: Two-way punching shear', desc: 'ACI 318-19 §22.6 interior column b_0', badge: 'published', icon: 'footing' },
+      { key: 'sd_rc_slab_sls', title: 'SD-3: RC serviceability (I_eff)', desc: 'ACI 318 Ch. 24 cracking & deflection', badge: 'published', icon: 'concrete' },
+      { key: 'sd_shear_wall', title: 'SD-5: RC shear wall in-plane', desc: 'ACI 318-19 Ch. 11 wall shear Vu/phi*Vn', badge: 'published', icon: 'concrete' }
     ]
   },
   {
     group: 'ENVIRONMENTAL LOADS',
     items: [
-      { key: 'wind_snow', title: 'Wind & snow loads (ASCE 7-22)', desc: 'Flat-roof snow & MWFRS wind pressure', badge: 'published', icon: 'wind' }
+      { key: 'wind_snow', title: 'Wind & snow loads (ASCE 7-22)', desc: 'Flat-roof snow & MWFRS wind pressure', badge: 'published', icon: 'wind' },
+      { key: 'sd_seismic_base', title: 'SD-4: Seismic base shear (ELF)', desc: 'ASCE 7-22 Ch. 12.8 Cs & V_base', badge: 'published', icon: 'wind' },
+      { key: 'sd_snow_drift', title: 'SD-6: Roof snow drift (ASCE 7-22)', desc: 'Step/parapet drift height & surcharge', badge: 'published', icon: 'wind' }
     ]
   },
   {

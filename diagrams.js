@@ -28,14 +28,14 @@ export function renderSheetDiagram(sheet, results) {
   if (title.includes('timber') || title.includes('wood') || title.includes('joist')) {
     return timberJoistDiagram(vars.L || '14.5 ft', vars.spacing || '16 in');
   }
-  if (title.includes('concrete')) {
-    return concreteSectionDiagram(vars.b || '12 in', vars.d || '19.5 in');
+  if (title.includes('concrete') || title.includes('rc column') || title.includes('rc serviceability') || title.includes('shear wall')) {
+    return concreteSectionDiagram(vars.b || vars.l_w || '12 in', vars.d || vars.h || vars.t_w || '19.5 in');
   }
-  if (title.includes('footing')) {
-    return footingDiagram(vars.B || '6.5 ft', vars.h || '18 in', vars.q_actual || 'q_act');
+  if (title.includes('footing') || title.includes('punching')) {
+    return footingDiagram(vars.B || vars.b_0 || '6.5 ft', vars.h || vars.d || '18 in', vars.q_actual || vars.V_u || 'q_act');
   }
-  if (title.includes('wind') || title.includes('snow')) {
-    return windSnowDiagram(vars.p_snow || 'p_snow', vars.p_windward || 'p_w');
+  if (title.includes('wind') || title.includes('snow') || title.includes('seismic')) {
+    return windSnowDiagram(vars.p_snow || vars.p_d || vars.V_base || 'p_snow', vars.p_windward || vars.C_s || 'p_w');
   }
   if (title.includes('runoff') || title.includes('rational')) {
     return runoffDiagram(vars.A_total || 'A', vars.Q_10 || 'Q_10');
