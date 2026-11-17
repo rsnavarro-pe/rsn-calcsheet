@@ -2,6 +2,7 @@
  * Application State — Single Source of Truth
  */
 import { TEMPLATES } from './templates.js';
+import { SAMPLE_SPREADSHEETS } from './spreadsheet.js';
 
 const STORAGE_KEY = 'us_calcsheet_studio_v1';
 
@@ -103,6 +104,29 @@ export function addCustomSheet({ title, codeRef, body }) {
   });
   state.activeSheetId = id;
   saveState();
+}
+
+export function addSpreadsheetSheet(sampleKey = 'beam_schedule') {
+  const sample = SAMPLE_SPREADSHEETS[sampleKey] || SAMPLE_SPREADSHEETS.beam_schedule;
+  const id = 'sp' + Date.now();
+  state.sheets.push({
+    id,
+    type: 'spreadsheet',
+    title: sample.title,
+    discipline: 'Spreadsheet',
+    codeRef: sample.codeRef,
+    rows: sample.rows.map(r => [...r])
+  });
+  state.activeSheetId = id;
+  saveState();
+}
+
+export function updateActiveSheetRows(rows) {
+  const sheet = getActiveSheet();
+  if (sheet) {
+    sheet.rows = rows;
+    saveState();
+  }
 }
 
 export function deleteSheet(id) {

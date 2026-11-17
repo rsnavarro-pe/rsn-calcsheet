@@ -4,8 +4,9 @@
 import {
   state, getActiveSheet, setActiveSheet, updateActiveSheetBody,
   updateActiveSheetMeta, updateProjectMeta, addSheetFromTemplate,
-  addCustomSheet, deleteSheet, replaceProjectState
+  addCustomSheet, addSpreadsheetSheet, updateActiveSheetRows, deleteSheet, replaceProjectState
 } from './state.js';
+import { renderSpreadsheetEditor, renderSpreadsheetOutput } from './spreadsheet.js';
 import { evaluateSheet } from './parser.js';
 import { openModuleModal } from './modal.js';
 import { openFormulaModal } from './formula-modal.js';
@@ -45,6 +46,14 @@ function bindTopBar() {
     });
     viewMode = 'split';
     midMode = 'code';
+    renderAll();
+  });
+
+  $('btn-new-grid').addEventListener('click', () => {
+    const count = state.sheets.filter(s => s.type === 'spreadsheet').length;
+    addSpreadsheetSheet(count % 2 === 0 ? 'beam_schedule' : 'storm_schedule');
+    viewMode = 'split';
+    midMode = 'form';
     renderAll();
   });
 
@@ -323,6 +332,33 @@ function renderLineGutter() {
 
 function renderPreview() {
   const sheet = getActiveSheet();
+  const sheetIndex = state.sheets.findIndex(s => s.id === sheet.id) + 1;
+  const titleBlock = `
+    <div class="title-block">
+      <div class="tb-main">
+        ${state.meta.firmName ? `<div class="tb-eyebrow">${esc(state.meta.firmName)}</div>` : ''}
+        <div class="tb-project">${esc(state.meta.projectName)}</div>
+        <div class="tb-sheet-title">${esc(sheet.title)}</div>
+      </div>
+      <div class="tb-meta-grid">
+        <div><span>Project #</span><strong>${esc(state.meta.projectNumber)}</strong></div>
+        <div><span>Sheet</span><strong>${sheetIndex} of ${state.sheets.length}</strong></div>
+        <div><span>By / Chk</span><strong>${esc(state.meta.engineer)} / ${esc(state.meta.checker)}</strong></div>
+        <div><span>Code</span><strong>${esc(sheet.codeRef || state.meta.codeEdition)}</strong></div>
+      </div>
+    </div>`;
+
+  if (sheet.type === 'spreadsheet') {
+    $('gov-dcr-status').textContent = 'Spreadsheet';
+    $('gov-dcr-status').className = 'gov-status';
+    renderSpreadsheetEditor($('input-form-pane'), sheet, (rows) => {
+      updateActiveSheetRows(rows);
+      renderPreview();
+    });
+    $('sheet-preview').innerHTML = `${titleBlock}<div class="cp-sheet"><h1 class="cp-h1">${esc(sheet.title)}</h1>${renderSpreadsheetOutput(sheet)}</div>`;
+    return;
+  }
+
   const results = evaluateSheet(sheet.body || '');
   const gov = getGoverningDCR(results);
   const govEl = $('gov-dcr-status');
@@ -334,7 +370,6 @@ function renderPreview() {
     govEl.className = `gov-status ${gov <= 1 ? 'pass' : 'fail'}`;
   }
 
-  const sheetIndex = state.sheets.findIndex(s => s.id === sheet.id) + 1;
   const diagramHtml = renderSheetDiagram(sheet, results);
   renderInputForm($('input-form-pane'), sheet, results, diagramHtml, (lineNo, nextVal, unit) => {
     const lines = (sheet.body || '').split('\n');
@@ -354,19 +389,7 @@ function renderPreview() {
   });
 
   $('sheet-preview').innerHTML = `
-    <div class="title-block">
-      <div class="tb-main">
-        ${state.meta.firmName ? `<div class="tb-eyebrow">${esc(state.meta.firmName)}</div>` : ''}
-        <div class="tb-project">${esc(state.meta.projectName)}</div>
-        <div class="tb-sheet-title">${esc(sheet.title)}</div>
-      </div>
-      <div class="tb-meta-grid">
-        <div><span>Project #</span><strong>${esc(state.meta.projectNumber)}</strong></div>
-        <div><span>Sheet</span><strong>${sheetIndex} of ${state.sheets.length}</strong></div>
-        <div><span>By / Chk</span><strong>${esc(state.meta.engineer)} / ${esc(state.meta.checker)}</strong></div>
-        <div><span>Code</span><strong>${esc(sheet.codeRef || state.meta.codeEdition)}</strong></div>
-      </div>
-    </div>
+    ${titleBlock}
     <div class="cp-sheet">
       ${diagramHtml ? `<div class="cp-diagram-float">${diagramHtml}</div>` : ''}
       <div class="cp-flow">${results.map(renderLine).join('')}</div>
