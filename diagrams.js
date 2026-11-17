@@ -76,7 +76,7 @@ export function renderSheetDiagram(sheet, results) {
   if (title.includes('vfd') || title.includes('affinity')) {
     return systemCurveDiagram(vars.Q_vfd || '300 gpm', vars.H_vfd || '45 ft');
   }
-  if (sheet.discipline === 'Areas') {
+  if (sheet.discipline === 'Areas' || sheet.discipline === 'Mathematics') {
     const areaSvg = renderAreaDiagram(title, vars);
     if (areaSvg) return areaSvg;
   }

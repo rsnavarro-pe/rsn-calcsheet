@@ -89,5 +89,19 @@ export function renderAreaDiagram(title, vars) {
       <text x="230" y="122" text-anchor="middle" font-size="11" fill="#2C2C2E">A = ${esc(A)}</text>
     `);
   }
+  if (title.includes('sphere') || title.includes('cylinder') || title.includes('cone') || title.includes('frustum') || title.includes('prism')) {
+    return wrapSvg(`Solid Geometry — V = ${vars.V || 'V'}`, `
+      <ellipse cx="230" cy="36" rx="54" ry="16" fill="#F5DFA6" stroke="#2C2C2E" stroke-width="1.5"/>
+      <path d="M176,36 V96 A54,16 0 0,0 284,96 V36" fill="#F5DFA6" fill-opacity="0.45" stroke="#2C2C2E" stroke-width="1.5"/>
+      <text x="230" y="124" text-anchor="middle" font-size="11" fill="#2C2C2E">V = ${esc(vars.V || '')}</text>
+    `);
+  }
+  if (title.includes('quadratic') || title.includes('linear')) {
+    return wrapSvg(`${title.includes('quadratic') ? 'Quadratic' : '2x2 Linear'} — x = ${vars.x_1 || vars.x || ''}`, `
+      <line x1="120" y1="66" x2="340" y2="66" stroke="#6E6E73" stroke-width="1.2"/>
+      <line x1="230" y1="14" x2="230" y2="118" stroke="#6E6E73" stroke-width="1.2"/>
+      <path d="${title.includes('quadratic') ? 'M155,22 Q230,130 305,22' : 'M150,96 L310,28 M150,32 L310,98'}" stroke="#90472D" stroke-width="2" fill="none"/>
+    `);
+  }
   return null;
 }

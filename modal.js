@@ -100,6 +100,19 @@ const MODULE_GROUPS = [
       { key: 'area_segment_chord', title: 'A-14: Segment (chord)', desc: 'Angle, rise & segment area', badge: 'published', icon: 'segment' },
       { key: 'area_segment_angle', title: 'A-15: Segment (angle)', desc: 'Rise, chord & segment area', badge: 'published', icon: 'segment' }
     ]
+  },
+  {
+    group: 'MATHEMATICS (VOLUMES & ALGEBRA)',
+    items: [
+      { key: 'math_sphere', title: 'M-1: Sphere', desc: 'Volume & surface area', badge: 'published', icon: 'circle' },
+      { key: 'math_cylinder', title: 'M-2: Cylinder', desc: 'Volume & lateral/total surface area', badge: 'published', icon: 'concrete' },
+      { key: 'math_cone', title: 'M-3: Cone', desc: 'Slant height, volume & surface area', badge: 'published', icon: 'geotri' },
+      { key: 'math_frustum', title: 'M-4: Conical frustum', desc: 'Slant height & frustum volume', badge: 'published', icon: 'trapezoid' },
+      { key: 'math_prism', title: 'M-5: Rectangular prism', desc: 'Volume, surface area & diagonal', badge: 'published', icon: 'concrete' },
+      { key: 'math_quadratic', title: 'M-6: Quadratic equation', desc: 'Discriminant, roots x1/x2 & vertex', badge: 'published', icon: 'parabola' },
+      { key: 'math_linear_2x2', title: 'M-7: 2x2 linear system', desc: "Cramer's rule determinant, x & y", badge: 'published', icon: 'curve' },
+      { key: 'math_trig_sas', title: 'M-8: Triangle solver (SAS)', desc: 'Law of cosines, area & angles', badge: 'published', icon: 'geotri' }
+    ]
   }
 ];
 
