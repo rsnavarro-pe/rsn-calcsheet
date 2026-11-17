@@ -304,7 +304,6 @@ function renderPreview() {
         <div><span>By / Chk</span><strong>${esc(state.meta.engineer)} / ${esc(state.meta.checker)}</strong></div>
         <div><span>Code</span><strong>${esc(sheet.codeRef || state.meta.codeEdition)}</strong></div>
       </div>
-      <div class="tb-seal">PE / SE<br>SEAL</div>
     </div>
     <div class="cp-sheet">
       ${diagramHtml ? `<div class="cp-diagram-float">${diagramHtml}</div>` : ''}

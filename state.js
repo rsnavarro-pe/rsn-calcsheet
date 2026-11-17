@@ -10,10 +10,10 @@ function createInitialState() {
     meta: {
       projectName: 'Oakridge Commercial Building',
       projectNumber: '2026-0412',
-      engineer: 'J. Doe, PE',
-      checker: 'A. Smith, SE',
+      engineer: 'RSN',
+      checker: 'RSN',
       codeEdition: 'IBC 2024 / ASCE 7-22',
-      firmName: 'RSN Engineering'
+      firmName: 'Ronnie S. Navarro, PE'
     },
     activeSheetId: 's1',
     sheets: [
@@ -31,6 +31,11 @@ function loadState() {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (parsed && Array.isArray(parsed.sheets) && parsed.sheets.length > 0) {
+        if (parsed.meta && parsed.meta.engineer === 'J. Doe, PE') {
+          parsed.meta.engineer = 'RSN';
+          parsed.meta.checker = 'RSN';
+          parsed.meta.firmName = 'Ronnie S. Navarro, PE';
+        }
         return parsed;
       }
     }
