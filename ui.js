@@ -23,14 +23,49 @@ let showKeypad = true;
 
 export function initUI() {
   bindTopBar();
+  bindNavDrawer();
   bindModeTabs();
   bindEditor();
   bindReferenceDrawer();
   renderAll();
 }
 
+function setNavDrawerOpen(open) {
+  const drawer = $('nav-drawer');
+  const backdrop = $('nav-drawer-backdrop');
+  const toggle = $('btn-nav-drawer');
+  if (!drawer) return;
+  drawer.classList.toggle('open', open);
+  drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+  if (backdrop) backdrop.classList.toggle('hidden', !open);
+  if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) $('btn-nav-drawer-close')?.focus();
+}
+
+function closeNavDrawer() { setNavDrawerOpen(false); }
+
+function bindNavDrawer() {
+  $('btn-nav-drawer')?.addEventListener('click', () => {
+    setNavDrawerOpen(!$('nav-drawer')?.classList.contains('open'));
+  });
+  $('btn-nav-drawer-close')?.addEventListener('click', closeNavDrawer);
+  $('nav-drawer-backdrop')?.addEventListener('click', closeNavDrawer);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $('nav-drawer')?.classList.contains('open')) closeNavDrawer();
+  });
+  document.querySelectorAll('.side-heading-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.side-block');
+      if (!block) return;
+      const collapsed = block.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    });
+  });
+}
+
 function bindTopBar() {
   $('btn-open-modal').addEventListener('click', () => {
+    closeNavDrawer();
     openModuleModal((key) => {
       if (key.startsWith('sp:')) {
         addSpreadsheetSheet(key.slice(3));
@@ -45,6 +80,7 @@ function bindTopBar() {
   });
 
   $('btn-new-blank').addEventListener('click', () => {
+    closeNavDrawer();
     addCustomSheet({
       title: 'New Calculation',
       codeRef: 'US Customary',
@@ -56,6 +92,7 @@ function bindTopBar() {
   });
 
   $('btn-new-grid').addEventListener('click', () => {
+    closeNavDrawer();
     const keys = ['beam_schedule', 'storm_schedule', 'interest_schedule', 'loan_schedule', 'npv_schedule'];
     const count = state.sheets.filter(s => s.type === 'spreadsheet').length;
     addSpreadsheetSheet(keys[count % keys.length]);
@@ -123,6 +160,7 @@ function bindModeTabs() {
     btn.addEventListener('click', () => {
       viewMode = btn.getAttribute('data-mode');
       applyViewMode();
+      closeNavDrawer();
     });
   });
   $('btn-mid-form').addEventListener('click', () => { midMode = 'form'; applyMidMode(); });
@@ -284,6 +322,7 @@ function renderSidebar() {
       setActiveSheet(s.id);
       if (viewMode === 'project') viewMode = 'split';
       renderAll();
+      closeNavDrawer();
     });
 
     item.appendChild(btn);

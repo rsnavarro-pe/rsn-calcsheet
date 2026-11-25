@@ -9,6 +9,7 @@
 <body>
   <header class="topbar">
     <div class="brand">
+      <button type="button" id="btn-nav-drawer" class="nav-toggle-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
       <span class="brand-title">RSN CalcSheet</span>
       <span class="brand-tag">US Structural &amp; Civil</span>
     </div>
@@ -25,40 +26,53 @@
     </div>
   </header>
 
+  <div id="nav-drawer-backdrop" class="nav-drawer-backdrop hidden"></div>
   <main class="workspace">
-    <aside class="sidebar">
+    <aside id="nav-drawer" class="sidebar nav-drawer" aria-label="Navigation menu" aria-hidden="true">
+      <div class="nav-drawer-header">
+        <span class="nav-drawer-title">RSN CalcSheet Menu</span>
+        <button type="button" id="btn-nav-drawer-close" class="nav-drawer-close" aria-label="Close navigation menu">&times;</button>
+      </div>
       <div class="side-block">
-        <div class="side-heading">PROJECT</div>
-        <button class="side-nav-btn" data-mode="project">Project data</button>
-        <button class="side-nav-btn" data-mode="preview">Report / Print preview</button>
+        <button type="button" class="side-heading side-heading-toggle" aria-expanded="true"><span>PROJECT</span><span class="side-chevron" aria-hidden="true">^</span></button>
+        <div class="side-block-body">
+          <button class="side-nav-btn" data-mode="project">Project data</button>
+          <button class="side-nav-btn" data-mode="preview">Report / Print preview</button>
+        </div>
       </div>
 
       <div class="side-block">
-        <div class="side-heading">Sheets <span id="sheet-count" class="side-count">0</span></div>
-        <div id="sheet-list" class="sheet-list"></div>
-        <div class="sheet-actions-row">
-          <button id="btn-open-modal" class="add-sheet-link">+ Add sheet</button>
-          <button id="btn-new-blank" class="add-sheet-link">+ New blank</button>
-          <button id="btn-new-grid" class="add-sheet-link">+ New grid</button>
+        <button type="button" class="side-heading side-heading-toggle" aria-expanded="true"><span>Sheets <span id="sheet-count" class="side-count">0</span></span><span class="side-chevron" aria-hidden="true">^</span></button>
+        <div class="side-block-body">
+          <div id="sheet-list" class="sheet-list"></div>
+          <div class="sheet-actions-row">
+            <button id="btn-open-modal" class="add-sheet-link">+ Add sheet</button>
+            <button id="btn-new-blank" class="add-sheet-link">+ New blank</button>
+            <button id="btn-new-grid" class="add-sheet-link">+ New grid</button>
+          </div>
         </div>
       </div>
 
       <div class="side-block side-toc">
-        <div class="side-heading">Contents</div>
-        <div id="contents-list" class="toc-list"></div>
+        <button type="button" class="side-heading side-heading-toggle" aria-expanded="true"><span>Contents</span><span class="side-chevron" aria-hidden="true">^</span></button>
+        <div class="side-block-body">
+          <div id="contents-list" class="toc-list"></div>
+        </div>
       </div>
 
       <div class="side-block">
-        <div class="side-heading">US Snippets</div>
-        <div class="chip-grid">
-          <button class="chip" data-insert="aisc(&quot;W16x36&quot;, &quot;Zx&quot;)">aisc(&quot;W16x36&quot;)</button>
-          <button class="chip" data-insert="nds(&quot;2x10&quot;, &quot;S&quot;)">nds(&quot;2x10&quot;)</button>
-          <button class="chip" data-insert="rebar(&quot;#5&quot;, &quot;area&quot;)">rebar(&quot;#5&quot;)</button>
-          <button class="chip" data-insert="check(demand, capacity, &quot;Check&quot;)">check(D,C)</button>
-          <button class="chip" data-insert=" -> kip-ft">-&gt; kip-ft</button>
-          <button class="chip" data-insert=" -> ft-in">-&gt; ft-in</button>
-          <button class="chip" data-insert=" -> psf">-&gt; psf</button>
-          <button class="chip" data-insert=" -> cfs">-&gt; cfs</button>
+        <button type="button" class="side-heading side-heading-toggle" aria-expanded="true"><span>US Snippets</span><span class="side-chevron" aria-hidden="true">^</span></button>
+        <div class="side-block-body">
+          <div class="chip-grid">
+            <button class="chip" data-insert="aisc(&quot;W16x36&quot;, &quot;Zx&quot;)">aisc(&quot;W16x36&quot;)</button>
+            <button class="chip" data-insert="nds(&quot;2x10&quot;, &quot;S&quot;)">nds(&quot;2x10&quot;)</button>
+            <button class="chip" data-insert="rebar(&quot;#5&quot;, &quot;area&quot;)">rebar(&quot;#5&quot;)</button>
+            <button class="chip" data-insert="check(demand, capacity, &quot;Check&quot;)">check(D,C)</button>
+            <button class="chip" data-insert=" -> kip-ft">-&gt; kip-ft</button>
+            <button class="chip" data-insert=" -> ft-in">-&gt; ft-in</button>
+            <button class="chip" data-insert=" -> psf">-&gt; psf</button>
+            <button class="chip" data-insert=" -> cfs">-&gt; cfs</button>
+          </div>
         </div>
       </div>
     </aside>

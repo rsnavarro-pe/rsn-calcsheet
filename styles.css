@@ -27,6 +27,13 @@ body {
   padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
 }
 .brand { display: flex; align-items: center; gap: 8px; }
+.nav-toggle-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 5px; border: 1px solid var(--color-border);
+  background: var(--color-offwhite); color: var(--color-graphite);
+  font-size: 18px; line-height: 1; cursor: pointer; padding: 0;
+}
+.nav-toggle-btn:hover { border-color: var(--color-terracotta); background: var(--color-terratint); color: var(--color-terracotta); }
 .brand-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; }
 .brand-tag {
   font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
@@ -52,17 +59,39 @@ body {
 .btn-light { background: var(--color-offwhite); }
 .file-btn { display: inline-flex; align-items: center; }
 
-.workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 245px 1fr; }
+.workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr; }
 
-.sidebar {
-  background: var(--color-offwhite); border-right: 1px solid var(--color-border);
-  padding: 12px 10px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto;
+.nav-drawer-backdrop { position: fixed; inset: 0; background: rgba(44,44,46,0.42); z-index: 59; }
+.sidebar.nav-drawer {
+  position: fixed; top: 0; left: 0; bottom: 0; width: min(295px, 86vw); z-index: 60;
+  background: var(--color-offwhite); border-right: 2px solid var(--color-terracotta);
+  padding: 12px 12px 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto;
+  box-shadow: 6px 0 24px rgba(44,44,46,0.18); transform: translateX(-100%); transition: transform 0.22s ease;
 }
+.sidebar.nav-drawer.open { transform: translateX(0); }
+.nav-drawer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 8px; border-bottom: 1px solid var(--color-border);
+}
+.nav-drawer-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--color-graphite); }
+.nav-drawer-close {
+  background: var(--color-white); border: 1px solid var(--color-border); border-radius: 4px;
+  width: 28px; height: 28px; font-size: 18px; line-height: 1; color: var(--color-graphite); cursor: pointer;
+}
+.nav-drawer-close:hover { border-color: var(--color-terracotta); color: var(--color-terracotta); background: var(--color-terratint); }
 .side-block { display: flex; flex-direction: column; gap: 4px; }
+.side-block-body { display: flex; flex-direction: column; gap: 4px; }
+.side-block.collapsed .side-block-body { display: none; }
 .side-heading {
   font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-  color: #6E6E73; display: flex; justify-content: space-between; padding: 0 4px 2px;
+  color: #6E6E73; display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;
 }
+.side-heading-toggle {
+  width: 100%; background: none; border: none; border-radius: 4px; cursor: pointer; font-family: var(--font-sans);
+}
+.side-heading-toggle:hover { background: rgba(0,0,0,0.04); color: var(--color-terracotta); }
+.side-chevron { font-size: 13px; line-height: 1; transition: transform 0.18s ease; }
+.side-block.collapsed .side-chevron { transform: rotate(180deg); }
 .side-nav-btn {
   text-align: left; background: none; border: none; padding: 5px 8px; border-radius: 4px;
   font-family: var(--font-sans); font-size: 13px; color: var(--color-graphite); cursor: pointer;
@@ -310,7 +339,7 @@ body {
 @page { size: letter; margin: 0.45in; }
 @media print {
   body { background: var(--color-white); height: auto; }
-  .topbar, .sidebar, .editor-pane, .pane-bar, .project-data-pane, .modal-backdrop { display: none !important; }
+  .topbar, .sidebar, .nav-drawer-backdrop, .editor-pane, .pane-bar, .project-data-pane, .modal-backdrop { display: none !important; }
   .workspace, .split-workspace { display: block; }
   .paper-scroll { padding: 0; overflow: visible; }
   .paper-sheet { box-shadow: none; padding: 0; max-width: none; }
